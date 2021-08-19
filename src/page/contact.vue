@@ -54,7 +54,7 @@
                },
                uploadSite: imgSite,
                headers:{
-                    access_token:sessionStorage.getItem('access_token')
+                    'access-token':sessionStorage.getItem('access_token')
                 },
 
             };

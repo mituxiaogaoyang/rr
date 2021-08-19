@@ -23,4 +23,19 @@ body{
   color: #2c3e50;
   font-size: 14px;
 }
+.answer table {
+  border-top: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+}
+.answer table td,
+.answer table th {
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  padding: 3px 5px;
+}
+.answer table th {
+  border-bottom: 2px solid #ccc;
+  text-align: center;
+  background-color: #f1f1f1;
+}
 </style>

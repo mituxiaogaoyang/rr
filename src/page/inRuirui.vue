@@ -56,10 +56,10 @@
         },
         methods: {
             getData(){
-                getEvents().then(res =>{this.events = res.data.content;});
-                getCulture().then(res =>{this.culture = res.data.content;});
-                getSituation().then(res =>{this.situation = res.data.content;});
-                getIp().then(res =>{this.ip = res.data.content;});
+                getEvents().then(res =>{this.events = res.data?res.data.content : ''});
+                getCulture().then(res =>{this.culture = res.data?res.data.content : ''});
+                getSituation().then(res =>{this.situation = res.data?res.data.content : ''});
+                getIp().then(res =>{this.ip = res.data?res.data.content : ''});
             },
 
             

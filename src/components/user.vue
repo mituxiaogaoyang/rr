@@ -44,7 +44,7 @@
             @current-change="handleCurrentChange"
             :total="page.total">
         </el-pagination>
-        <el-dialog :title="updateId?'修改用户':'新添用户'" :visible.sync="dialogFormVisible">
+        <el-dialog :title="updateId?'修改用户':'新添用户'" :close-on-click-modal="false" :visible.sync="dialogFormVisible">
             <el-form :model="form"  label-width="80px">
                 <el-form-item label="用户名">
                     <el-input v-model="form.loginName" autocomplete="off"></el-input>
@@ -238,6 +238,8 @@
                         this.$message.success('密码重置成功');
                         this.dialogFormVisible2 = false;
                     })
+                }else{
+                    this.$message.success('密码和重复密码不能为空');
                 }
             }
 

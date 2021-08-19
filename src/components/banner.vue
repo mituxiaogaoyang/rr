@@ -80,25 +80,27 @@
                 service:'',
                 uploadSite: imgSite,
                 headers:{
-                    access_token:sessionStorage.getItem('access_token')
+                    'access-token':sessionStorage.getItem('access_token')
                 },
                 bannerImg: ''
             };
         },
         created(){    
             const isNews = Number(sessionStorage.getItem('userLimit'));
-            isNews && this.$router.push('./news');
-        },
-        mounted () {
-            this.getData();
+            if(isNews) this.$router.push('./news');
+            else this.getData();
         },
         methods: {
             getData(){
                 getCompanyInfo().then(res =>{
-                    this.intro = res.data.introduce;
-                    this.product = res.data.product;
-                    this.service = res.data.service;
-                    this.bannerImg = res.data.guidePic;
+                    if(res.data){
+
+                    
+                        this.intro = res.data.introduce;
+                        this.product = res.data.product;
+                        this.service = res.data.service;
+                        this.bannerImg = res.data.guidePic;
+                    }
                 })
             },
             TurnEdit(n){

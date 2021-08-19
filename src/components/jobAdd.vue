@@ -48,10 +48,10 @@
                 editors[i].config.zIndex = 100;
                 editors[i].config.uploadImgServer = imgSite; // 上传图片到服务器
                 editors[i].config.uploadImgHeaders  = {
-                    'access_token': sessionStorage.getItem('access_token')
+                    'access-token': sessionStorage.getItem('access_token')
                 };
                 editors[i].config.uploadImgParams = {
-                    type: 2,
+                    type: 1,
                 }
                 editors[i].config.uploadFileName = 'file';
                 editors[i].config.onchange = (html) => {

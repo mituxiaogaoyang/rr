@@ -65,11 +65,11 @@
         },
         methods: {
             getData(){
-                getTrainAdv().then(res =>{this.train3 = res.data.content;});
-                getTrainContact().then(res =>{this.train5 = res.data.content;});
-                getTrainSponsor().then(res =>{this.train4 = res.data.content;});
-                getTrainNotice().then(res =>{this.train1 = res.data.content;});
-                getTrainService().then(res =>{this.train2 = res.data.content;});
+                getTrainAdv().then(res =>{this.train3 =res.data?res.data.content : ''});
+                getTrainContact().then(res =>{this.train5 = res.data?res.data.content : ''});
+                getTrainSponsor().then(res =>{this.train4 = res.data?res.data.content : ''});
+                getTrainNotice().then(res =>{this.train1 = res.data?res.data.content : ''});
+                getTrainService().then(res =>{this.train2 = res.data?res.data.content : ''});
             }
             
         },
@@ -90,6 +90,7 @@
                 padding: 5px 15px;
                 border-radius: 4px;
                 min-height: 70px;
+                overflow: hidden;
             }
             .temp>div:last-child{
                 margin-top:10px;

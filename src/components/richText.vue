@@ -62,8 +62,11 @@
             editor.config.zIndex = 100;
             editor.config.uploadImgServer = imgSite; // 上传图片到服务器
             editor.config.uploadImgHeaders  = {
-                'access_token': sessionStorage.getItem('access_token')
+                'access-token': sessionStorage.getItem('access_token')
             };
+            editor.config.uploadImgParams = {
+                type: 1,
+            }
             editor.config.uploadFileName = 'file';
             editor.config.onchange = (html) => {
                 this.editorContent = html;

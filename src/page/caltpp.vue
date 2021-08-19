@@ -56,10 +56,10 @@
         },
         methods: {
             getData(){
-                getAdv().then(res =>{this.caltpp3 = res.data.content;});
-                getCore().then(res =>{this.caltpp2 = res.data.content;});
-                getBuy().then(res =>{this.caltpp4 = res.data.content;});
-                getSoft().then(res =>{this.caltpp1 = res.data.content;});
+                getAdv().then(res =>{this.caltpp3 = res.data?res.data.content : ''});
+                getCore().then(res =>{this.caltpp2 =res.data?res.data.content : ''});
+                getBuy().then(res =>{this.caltpp4 = res.data?res.data.content : '';});
+                getSoft().then(res =>{this.caltpp1 = res.data?res.data.content : ''});
             }
             
         },
@@ -81,6 +81,7 @@
                 border-radius: 4px;
                 min-height: 70px;
                 max-height: 150px;
+                overflow: hidden;
             }
             .temp>div:last-child{
                 margin-top:10px;

@@ -65,11 +65,11 @@
         },
         methods: {
             getData(){
-                getMeetingAdv().then(res =>{this.meeting3 = res.data.content;});
-                getMeetingContact().then(res =>{this.meeting5 = res.data.content;});
-                getMeetingSponsor().then(res =>{this.meeting4 = res.data.content;});
-                getMeetingNotice().then(res =>{this.meeting1 = res.data.content;});
-                getMeetingUndertake().then(res =>{this.meeting2 = res.data.content;});
+                getMeetingAdv().then(res =>{this.meeting3 = res.data?res.data.content : ''});
+                getMeetingContact().then(res =>{this.meeting5 = res.data?res.data.content : ''});
+                getMeetingSponsor().then(res =>{this.meeting4 = res.data?res.data.content : ''});
+                getMeetingNotice().then(res =>{this.meeting1 = res.data?res.data.content : ''});
+                getMeetingUndertake().then(res =>{this.meeting2 =res.data?res.data.content : ''});
             }
             
         },
@@ -90,6 +90,7 @@
                 padding: 5px 15px;
                 border-radius: 4px;
                 min-height: 70px;
+                overflow: hidden;
             }
             .temp>div:last-child{
                 margin-top:10px;

@@ -1,6 +1,6 @@
 
 import apiService from './http';
-export const apiContextPath = '/apiPath'; //
+export const apiContextPath = '/ct'; //
 const pageSize = 10;
 //logout
 export function logout() {
@@ -188,19 +188,19 @@ export function setMeetingUndertake(content){
 }
 //index
 export function getCompanyInfo(){
-    return apiService.get(apiContextPath + '/conpany/info');
+    return apiService.get(apiContextPath + '/company/info');
 }
 export function setCompanyWord(introduce){
-    return apiService.get(apiContextPath + '/conpany/introduce/edit',{introduce});
+    return apiService.get(apiContextPath + '/company/introduce/edit',{introduce});
 }
 export function setCompanyProduct(product){
-    return apiService.get(apiContextPath + '/conpany/product/edit',{product});
+    return apiService.get(apiContextPath + '/company/product/edit',{product});
 }
 export function setCompanyService(service){
-    return apiService.get(apiContextPath + '/conpany/service/edit',{service});
+    return apiService.get(apiContextPath + '/company/service/edit',{service});
 }
 export function setBannerImg(guidepic){
-    return apiService.get(apiContextPath + '/conpany/guidepic/edit',{guidepic});
+    return apiService.get(apiContextPath + '/company/guidepic/edit',{guidepic});
 }
 //train
 export function getTrainAdv(){

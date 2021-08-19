@@ -8,7 +8,7 @@
 import axios from 'axios';
 import {Message} from 'element-ui';
 import qs from 'qs';
-const apiContextPath_auth = '/apiPath'; // 登录认证
+const apiContextPath_auth = '/ct'; // 登录认证
 
 export const aliOsSite = 'http://ori-portal.oss-cn-shanghai.aliyuncs.com/portal/'; //图片存储地址
 let headers = {
@@ -54,7 +54,7 @@ function exceptionHandler(code, message){
 let expiration = sessionStorage.getItem('expiration'); //token过期时间
 export function refreshToken(){
     const userToken = getToken();
-    headers['access_token'] = userToken['access_token'];
+    headers['access-token'] = userToken['access_token'];
     // headers.token = userToken.accessToken
     return new Promise((resolve) =>{
         axios.request(apiContextPath_auth + '/auth/token', {
@@ -95,7 +95,7 @@ function openFile(url, filename, target){
 }
 export  function apiAxios(options, downloadName) {
     const userToken = getToken();
-    headers['access_token'] = userToken['access_token'];
+    headers['access-token'] = userToken['access_token'];
     // delete headers.refreshToken
     options.headers = headers;
     return new Promise((resolve, reject) =>{

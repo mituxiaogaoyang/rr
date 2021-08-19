@@ -8,7 +8,7 @@ export function getCode(){
 export function loginIn(userName, pwd){
     return axios({
         method: 'post',
-        url: '/apiPath/login',
+        url: '/ct/login',
         data: qs.stringify({password: pwd,loginName: userName}),
         headers:{'Content-Type': 'application/x-www-form-urlencoded'}
     })
