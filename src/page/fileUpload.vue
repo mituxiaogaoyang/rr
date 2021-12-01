@@ -1,0 +1,138 @@
+<template>
+  <div id="fileUpload">
+        <div class="pTable">
+            <div id="table" class="container_pTable"></div>
+            <div id="table-lanthanoids" class="container_pTable"></div>
+            <div id="table-actinoids" class="container_pTable"></div>
+        </div>
+        <div class="form_file">
+            <div class="line">
+                <div class="label">相关元素：</div>
+                <div class="val elements"><el-tag v-for=" k in selectedElements" :key="k">{{k}}</el-tag></div>
+            </div>
+            <div class="line">
+                <div class="label">文件名称：</div>
+                <div class="val"><el-input v-model="fileName" placeholder="请输入内容"></el-input></div>
+            </div>
+            <div class="line">
+                <div class="label">文件源名称：</div>
+                <div class="val"><el-input v-model="fileSourceName" placeholder="请输入内容"></el-input></div>
+            </div>
+            <div class="line">
+                <div class="label">文件价格：</div>
+                <div class="val"><el-input v-model="price" placeholder="请输入内容"></el-input></div>
+            </div>
+            <div class="line">
+                <div class="label">文件上传：</div>
+                <div class="val">
+                    <el-upload
+                        class="upload_box"
+                        :action="uploadSite"
+                        :on-success="uploadSuccess"
+                        :headers ="headers"
+                        :data="{type:1}"
+                        :limit="1"
+                        :file-list ="files"
+                        :show-file-list="true">
+                        <el-button size="small" type="primary">点击上传</el-button>
+                    </el-upload>
+                </div>
+            </div>
+            <div class="line line_last"><el-button type="primary" @click="onSubmit">提交</el-button></div>
+        </div>
+  </div>
+</template>
+
+<script>
+import $ from 'jquery';
+import data from '../utils/periodicTable';
+import {deal, select} from '../utils/pTable';
+import '../utils/pTable.css';
+import { apiContextPath, addFile} from '@/apis/home';
+const imgSite = apiContextPath + '/upload' ;
+
+export default {
+    name: 'fileUpload',
+    data () {
+        return {
+            selectedElements:[],
+            uploadSite: imgSite,
+            headers:{
+                'access-token':sessionStorage.getItem('access_token')
+            },
+            fileName:'',
+            fileSourceName:'',
+            price: '',
+            files:[]
+        };
+    },
+    mounted () {
+        deal(data);
+        const _instance = this;
+        $('body').on('click', '.element', function(e){
+            var _this = $(this);
+            select(_this,_instance.selectedElements)
+        })
+    },
+    methods: {
+        uploadSuccess(res,file){
+            this.path =  file.response.data;
+        },
+        onSubmit(){
+            const {fileName, fileSourceName, price,  path, selectedElements} = this;
+            if(fileName && price&&fileSourceName &&  path && selectedElements.length){
+                const elementCodes = selectedElements.join(',');
+                addFile({fileName,fileSourceName,price,path,elementCodes}).then(res =>{
+                    this.$message.success('新添成功');
+                    this.fileName ='';
+                    this.fileSourceName ='';
+                    this.price ='';
+                    this.selectedElements = [];
+                    this.path ='';
+                    this.files = [];
+                });
+            }else{
+                this.$message.warning('提交信息不完整')
+            }
+        }
+    }
+
+}
+</script>
+
+<style lang='less' scoped>
+.pTable{
+    float:left;
+}
+.form_file{
+    padding:30px 0;
+    width:400px;
+    float: left;
+    .line{
+        margin: 12px 0;
+        display: flex;
+
+        .label{
+            width:100px;
+            text-align: right;
+            line-height: 40px;
+        }
+        .val{
+            width: 280px;
+            .el-input {
+                width: 100%;
+            }
+        }
+        .elements{
+            border-bottom: 1px dotted #ccc;
+        }
+        
+    }
+    .line_last{
+        .el-button{
+            margin: 20px 100px;
+        }
+    }
+
+}
+</style>

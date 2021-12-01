@@ -15,6 +15,7 @@ import newsDetail from '@/components/newsDetail';
 import user from '@/components/user';
 import job from '@/components/job';
 import addJob from '@/components/jobAdd';
+import fileManager from '@/page/fileManager';
 
 Vue.use(VueRouter);
 
@@ -98,6 +99,11 @@ const routes = [
         path: '/user',
         name:'user',
         component:user,
+      },
+      {
+        path: '/fileManager',
+        name:'fileManager',
+        component:fileManager,
       },
     ]
   }

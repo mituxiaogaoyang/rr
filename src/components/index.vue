@@ -37,6 +37,9 @@
                     <router-link to="/train">培训服务</router-link>
                 </div>
                 <div class="list" v-if="userLimit">
+                    <router-link to="/fileManager">文件管理</router-link>
+                </div>
+                <div class="list" v-if="userLimit">
                     <router-link to="/contact">联系我们</router-link>
                 </div>
                 <div class="list" v-if="userLimit">

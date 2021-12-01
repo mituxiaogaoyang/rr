@@ -30,16 +30,6 @@ export function resetPwd(data){
     return apiService.post(apiContextPath + '/admin/reset/pwd',data);
 }
 //news
-export const kindsNews = [
-    {label:'新橙快报',val:1},
-    {label:'北斗资讯',val:2},
-    {label:'应急管理行业要闻',val:3},
-    {label:'智慧交通行业要闻',val:4},
-    {label:'精准城市行业要闻',val:5},
-    {label:'国土地灾行业要闻',val:6},
-    {label:'员工风采',val:7},
-    {label:'直播公告',val:8},
-];
 export const states = [
     {label:'未发布',val:0},
     {label:'已发布',val:1},
@@ -232,4 +222,11 @@ export function getTrainService(){
 }
 export function setTrainService(content){
     return apiService.post(apiContextPath + '/training/service/content/edit',{content});
+}
+//file
+export function getFilesRecord(data){
+    return apiService.get(apiContextPath + '/fileDownload/record/query',{...data,pageSize});
+}
+export function addFile(data){
+    return apiService.post(apiContextPath + '/fileElement/save',data);
 }

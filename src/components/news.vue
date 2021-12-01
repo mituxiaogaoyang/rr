@@ -64,13 +64,12 @@
 
 <script>
     import moment from 'moment';
-    import {kindsNews, states, getNews, publishNews, deleteNews} from '@/apis/home';
+    import { states, getNews, publishNews, deleteNews} from '@/apis/home';
     export default {
         data () {
             return {
                 tableData:[],
                 typeNews: null,
-                types:kindsNews,
                 states: states,
                 status: '',
                 page:{
