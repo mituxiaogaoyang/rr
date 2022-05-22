@@ -2,6 +2,68 @@
 import apiService from './http';
 export const apiContextPath = '/ct'; //
 const pageSize = 10;
+export const navList= [
+    {
+        name: '首页管理',
+        path: '/banner',
+    },
+    {
+        name: '公司产品',
+        path: 'banner',
+        children: [
+            {
+                name: 'CALTPP软件',
+                path: 'caltpp',
+            },{
+                name: '相场软件',
+                path: 'caltpp',
+            },{
+                name: '其他软件',
+                path: '/otherApp?type=3',
+            },{
+                name: '国外软件',
+                path: '/otherApp?type=4',
+            },{
+                name: '其他产品',
+                path: '/otherApp?type=5',
+            },
+
+        ]
+    },{
+        name: '走进锐睿',
+        path: '/inRuirui',
+    },{
+        name: '新闻中心',
+        path: '/news',
+    },{
+        name: '人才招聘',
+        path: '/job',
+    },{
+        name: '服务提供',
+        path: '/job',
+        children: [
+            {
+                name: '会议服务',
+                path: '/metting',
+            },{
+                name: '培训服务',
+                path: '/train',
+            },{
+                name: '材料研究及咨询',
+                path: 'caltpp',
+            }
+        ]
+    },{
+        name: '文件管理',
+        path: '/fileManager',
+    },{
+        name: '联系我们',
+        path: '/contact',
+    },{
+        name: '用户管理',
+        path: '/user',
+    }
+]
 //logout
 export function logout() {
     return apiService.get(apiContextPath + '/logout');
@@ -229,4 +291,24 @@ export function getFilesRecord(data){
 }
 export function addFile(data){
     return apiService.post(apiContextPath + '/fileElement/save',data);
+}
+//index 
+export function getMenuList(){
+    return apiService.get(apiContextPath + '/company/menu/list');
+}
+export function setBannerItem(content){
+    return apiService.get(apiContextPath + '/company/guidepic/edit',content);
+}
+//分页查询产品
+export function getAppList(params){
+    return apiService.get(apiContextPath + '/product/query',params);
+}
+export function addApp(data){
+    return apiService.post(apiContextPath + '/product/save',data);
+}
+export function updateApp(data){
+    return apiService.post(apiContextPath + '/product/update',data);
+}
+export function getAppDetail(id){
+    return apiService.get(apiContextPath + '/product/get',{id});
 }
