@@ -14,37 +14,20 @@
         </div>
         <div class="home_bot">
             <div class="nav_bar">
-                <div class="list" v-if="userLimit">
-                    <router-link to="/banner">首页管理</router-link>
-                </div>
-                <div class="list" v-if="userLimit">
-                    <router-link to="/job">人才招聘</router-link>
-                </div>
-                <div class="list" v-if="userLimit">
-                    <router-link to="/inRuirui">走进锐睿</router-link>
-                </div>
-                
-                <div class="list" >
-                    <router-link to="/news">新闻中心</router-link>
-                </div>
-                <div class="list" v-if="userLimit">
-                    <router-link to="/caltpp">CALTPP软件</router-link>
-                </div>
-                <div class="list" v-if="userLimit">
-                    <router-link to="/metting">会议服务</router-link>
-                </div>
-                <div class="list" v-if="userLimit">
-                    <router-link to="/train">培训服务</router-link>
-                </div>
-                <div class="list" v-if="userLimit">
-                    <router-link to="/fileManager">文件管理</router-link>
-                </div>
-                <div class="list" v-if="userLimit">
-                    <router-link to="/contact">联系我们</router-link>
-                </div>
-                <div class="list" v-if="userLimit">
-                    <router-link to="/user">用户管理</router-link>
-                </div>
+                <el-menu
+                    default-active="2" router
+                    class="el-menu-vertical-demo">
+                    <template v-for="list in navList" >
+                        <el-submenu :index="list.path" v-if="list.children">
+                            <template slot="title">{{list.name}}</template>
+                            <el-menu-item :index="item.path" v-for="item in list.children">{{item.name}}</el-menu-item>
+                        </el-submenu>
+                        <el-menu-item :index="list.path" v-else>
+                            <span slot="title">{{list.name}}</span>
+                        </el-menu-item>
+                    </template>
+                </el-menu>
+
             </div>
             <div class="home_content">
                 <el-scrollbar style="height:100%">
@@ -74,10 +57,11 @@
 
 <script>
     import {storeToken, removeToken} from '@/apis/http';
-    import {logout,updatePwd } from '@/apis/home';
+    import {logout,updatePwd,navList} from '@/apis/home';
     export default {
         data () {
             return {
+                navList,
                 dialogFormVisible: false,
                 form:{
                     pwdOld: '',
@@ -141,9 +125,9 @@
     };
 </script>
 
-<style lang='less' scoped>
+<style lang='less' >
 @heightHeader:36px;
-@widthNav: 180px;
+@widthNav: 200px;
 .home_page{
     height: 100vh;
     .home_ceil{
@@ -181,6 +165,13 @@
             background-color:#eef1f6 ;
             width: @widthNav;
             height: 100%;
+            .el-menu{
+                background-color:#eef1f6 ;
+            }
+            .el-menu-item, .el-submenu__title{
+                height: 50px;
+                line-height: 50px;
+            }
             .list{
                 line-height: 56px;
                 a{

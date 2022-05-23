@@ -22,8 +22,8 @@
     export default {
         data () {
             return {
-                userName: '',
-                userPassword: '',
+                userName: 'test',
+                userPassword: 'admin',
             };
         },
         mounted () {
@@ -56,11 +56,14 @@
     background-size: 100% 100%;
     overflow: hidden;
     .container{
-        width:600px;
+        width:500px;
         margin: 210px auto 0;
         .title{
             color:#fff;
-            font-size: 32px;
+            font-size: 26px;
+            font-weight: bold;
+            text-align: center;
+            margin:25px 0;
         }
         .login_box{
             background-color: #fff;
@@ -76,7 +79,7 @@
                 }
                 .form_box{
                     .input_login{
-                        margin:6px 0;
+                        margin:12px 0;
                         
                     }
                     .img_box{
@@ -106,6 +109,6 @@
 </style>
 <style>
 .el-input .el-input__inner{
-    border-width: 0 0 1px 0;
+    /* border-width: 0 0 1px 0; */
 }
 </style>

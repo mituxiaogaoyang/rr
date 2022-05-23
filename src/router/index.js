@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Login from '@/components/login';
 import Home from '@/components/index';
-import Banner from '@/components/banner';
+import Banner from '@/page/index';
 import news from '@/components/news';
 import newsAdd from '@/components/newsAdd';
 import inRuirui from '@/page/inRuirui';
@@ -16,7 +16,9 @@ import user from '@/components/user';
 import job from '@/components/job';
 import addJob from '@/components/jobAdd';
 import fileManager from '@/page/fileManager';
-
+import addBanner from '@/components/bannerAdd';
+import otherApp from '@/page/otherApp';
+import appDetail from '@/page/app/appDetail';
 Vue.use(VueRouter);
 
 const routes = [
@@ -44,6 +46,26 @@ const routes = [
         path: '/banner',
         name:'banner',
         component:Banner,
+      },
+      {
+        path: '/addBanner',
+        name:'banner',
+        component:addBanner,
+      },
+      {
+        path: '/otherApp',
+        name:'otherApp',
+        component:otherApp,
+      },
+      {
+        path: '/appDetail',
+        name:'appDetail',
+        component:appDetail,
+      },
+      {
+        path: '/otherApp',
+        name:'allProducts',
+        component:otherApp,
       },
       {
         path: '/job',
