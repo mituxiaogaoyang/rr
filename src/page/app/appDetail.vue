@@ -2,9 +2,9 @@
   <div id="appDetail">
     <div class="line">
         <div class="label">软件名称</div>
-        <el-input v-model="productName" placeholder="建议不超过5个字"></el-input>
+        <el-input v-model="productName" placeholder="建议不超过5个字" :disabled="canEdit"></el-input>
     </div>
-    <div class="line">
+    <div class="line" v-if="!canEdit">
         <div class="label">软件排序</div>
         <el-input-number v-model="sort"  :min="1" :max="6" label="序号"></el-input-number>
     </div>
@@ -34,7 +34,7 @@
 
 <script>
 import richText from './richTextSingle.vue';
-import {addApp, getAppDetail, updateApp} from '@/apis/home';
+import {addApp, getAppDetail, updateApp, getCaltpp, getAppXC} from '@/apis/home';
 const mapPage =[
     // {page: 'situation', word: '公司概况', fun: getSituation,func2:setSituation,backRoute: '/inRuirui'},
     // {page: 'culture', word: '公司文化', fun: getCulture,func2:setCulture,backRoute: '/inRuirui'},
@@ -50,14 +50,54 @@ export default {
             coreFunction: '',
             advantage: '',
             purchase: '',
-            sort: 1
+            sort: 1,
+            canEdit:false
+        }
+    },
+    watch:{
+        '$route.query.type'(){
+            this.getData();
         }
     },
     created(){
+        console.log(this.$route.query)
         const id = this.$route.query.id;
         if(id) this.getDetail(id);
+        this.getData();
     },
     methods:{
+        getData(){ //获取相场 和caltpp详情
+            const type = this.$route.query.type;
+            if(type ==1){
+                this.canEdit = true;
+                this.getCaltpp();
+            }else if(type ==2){
+                this.getAppXC();
+                this.canEdit = true;
+            }
+        },
+        getCaltpp(){
+            getCaltpp().then(res =>{
+                const {id,name , introduction , coreFunction , advantage ,purchase , sort} = res.data;
+               this.productName = name;
+               this.introduction = introduction;
+               this.coreFunction = coreFunction;
+               this.advantage = advantage;
+               this.purchase = purchase;
+               this.id = id;
+            })
+        },
+        getAppXC(){
+            getAppXC().then(res =>{
+                const {id,name , introduction , coreFunction , advantage ,purchase , sort} = res.data;
+               this.productName = name;
+               this.introduction = introduction;
+               this.coreFunction = coreFunction;
+               this.advantage = advantage;
+               this.purchase = purchase;
+               this.id = id;
+            })
+        },
         getDetail(id){
            getAppDetail(id).then(res =>{
                const {name , introduction , coreFunction , advantage ,purchase , sort} = res.data;
@@ -83,10 +123,10 @@ export default {
             const sort = this.sort;
             if(productName && introduction && coreFunction && advantage && purchase && sort){
                 const id = this.$route.query.id;
-                if(id){
-                    updateApp({id,productName,introduction,coreFunction,advantage,purchase,type, sort}).then(res =>{
+                if(id || this.canEdit){
+                    updateApp({id:id||this.id,productName,introduction,coreFunction,advantage,purchase,type, sort}).then(res =>{
                         this.$message.success('更新成功');
-                        this.cancelAdd();
+                        if(!this.canEdit) this.cancelAdd();
                     })
                 }else{
 

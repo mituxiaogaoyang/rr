@@ -13,10 +13,10 @@ export const navList= [
         children: [
             {
                 name: 'CALTPP软件',
-                path: 'caltpp',
+                path: '/appDetail?type=1',
             },{
                 name: '相场软件',
-                path: 'caltpp',
+                path: '/appDetail?type=2',
             },{
                 name: '其他软件',
                 path: '/otherApp?type=3',
@@ -209,34 +209,34 @@ export function setSoft(content){
 }
 //meeting
 export function getMeetingAdv(){
-    return apiService.get(apiContextPath + '/metting/advantage/feature/get');
+    return apiService.get(apiContextPath + '/meeting/advantage/feature/get');
 }
 export function setMeetingAdv(content){
-    return apiService.post(apiContextPath + '/metting/advantage/feature/edit',{content});
+    return apiService.post(apiContextPath + '/meeting/advantage/feature/edit',{content});
 }
 export function getMeetingContact(){
-    return apiService.get(apiContextPath + '/metting/contact/method/get');
+    return apiService.get(apiContextPath + '/meeting/contact/method/get');
 }
 export function setMeetingContact(content){
-    return apiService.post(apiContextPath + '/metting/contact/method/edit',{content});
+    return apiService.post(apiContextPath + '/meeting/contact/method/edit',{content});
 }
 export function getMeetingSponsor(){
-    return apiService.get(apiContextPath + '/metting/contact/sponsor/get');
+    return apiService.get(apiContextPath + '/meeting/contact/sponsor/get');
 }
 export function setMeetingSponsor(content){
-    return apiService.post(apiContextPath + '/metting/contact/sponsor/edit',{content});
+    return apiService.post(apiContextPath + '/meeting/contact/sponsor/edit',{content});
 }
 export function getMeetingNotice(){
-    return apiService.get(apiContextPath + '/metting/notice/get');
+    return apiService.get(apiContextPath + '/meeting/notice/get');
 }
 export function setMeetingNotice(content){
-    return apiService.post(apiContextPath + '/metting/notice/edit',{content});
+    return apiService.post(apiContextPath + '/meeting/notice/edit',{content});
 }
 export function getMeetingUndertake(){
-    return apiService.get(apiContextPath + '/metting/undertake/metting/get');
+    return apiService.get(apiContextPath + '/meeting/undertake/meeting/get');
 }
 export function setMeetingUndertake(content){
-    return apiService.post(apiContextPath + '/metting/undertake/metting/edit',{content});
+    return apiService.post(apiContextPath + '/meeting/undertake/meeting/edit',{content});
 }
 //index
 export function getCompanyInfo(){
@@ -311,4 +311,10 @@ export function updateApp(data){
 }
 export function getAppDetail(id){
     return apiService.get(apiContextPath + '/product/get',{id});
+}
+export function getCaltpp() {
+    return apiService.get(apiContextPath + '/product/caltpp/get');
+}
+export function getAppXC() {
+    return apiService.get(apiContextPath + '/product/xc/get');
 }

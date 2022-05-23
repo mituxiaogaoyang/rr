@@ -1,37 +1,39 @@
 <template>
     <div class='banner_page'>
          <el-button type="primary" plain @click="addItem">新增</el-button>
-         <el-table  :data="tableData" border  >
+         <el-table  :data="tableData" border>
              <el-table-column
                 prop="sort"
-                label="排序"
-                align="center"
-                width="100">
+                label="序号"
+                width="50">
+            </el-table-column>
+            <el-table-column
+                prop="position"
+                label="类型"
+                width="210">
             </el-table-column>
             <el-table-column
                 prop="name"
-                label="名称"
-                align="center"
-                >
+                label="图片"
+                width="150">
+                <template slot-scope="scope">
+                    <span>{{scope.row.status?'已发布':'未发布'}}</span>
+                </template>
             </el-table-column>
             <el-table-column
-                prop="statusName"
-                label="启用状态"
-                align="center"
-                width="120">
+                prop="linkMenu"
+                label="菜单">
             </el-table-column>
             <el-table-column
-                prop="time"
-                align="center"
-                label="创建时间">
+                prop="linkId"
+                label="id">
             </el-table-column>
             <el-table-column
                 prop="address"
                 label="操作"
-                align="center"
-                width="180">
+                width="210">
                 <template slot-scope="scope">
-                    <el-button @click="modify(scope.row)" type="text" size="small">编辑</el-button>
+                    <el-button @click="modify(scope.row)" type="text" size="small">修改</el-button>
                     <el-button @click="remove(scope.row.id)" type="text" size="small">删除</el-button>
                 </template>
             </el-table-column>
@@ -48,8 +50,7 @@
 
 <script>
     import bannerAdd from '@/components/bannerAdd.vue'; 
-    import moment from 'moment';
-    import {getAppList, getCompanyInfo, deleteJob} from '@/apis/home';
+    import {getMenuList, getCompanyInfo, deleteJob} from '@/apis/home';
     export default {
         components: {bannerAdd},
         data () {
@@ -65,31 +66,11 @@
         mounted () {
             this.getData();
         },
-        watch:{
-            '$route.query'(nV){
-                this.getData();
-            }
-        },
         methods: {
             getData(i){
-                const params = {
-                    page: this.page.current,
-                    pageSize: 10,
-                    type: this.$route.query.type
-                }
-                getAppList(params).then(res =>{
+                getCompanyInfo().then(res =>{
                     this.page.total = res.totalCount;
                     const lists = res.items;
-                    lists.forEach(item =>{
-                        let time;
-                        if(item.updateTime){
-                            time = moment(item.updateTime).format('YYYY-MM-DD');
-                        }else{
-                            time = moment(item.createTime).format('YYYY-MM-DD');
-                        }
-                        item.time = time;
-                        item.statusName = item.status?'启用':'禁用';
-                    })
                     this.tableData = lists;
                 });
             },
@@ -97,12 +78,14 @@
                 this.getData(i);
             },
             addItem(){
-                const type = this.$route.query.type;
-                this.$router.push('/appDetail?type='+type);
+                this.$router.push('/addBanner');
             },
             modify(row){
-                const type = this.$route.query.type;
-                this.$router.push({path:'/appDetail',query:{type,id:row.id}});
+                if(row.publishState){
+                    this.$message.warning('不能编辑已发布内容，如需修改，请取消发布');
+                }else{
+                    this.$router.push({path:'/addJob',query:{id:row.id}});
+                }
             },
             remove(id){
                 this.$confirm('确定删除该职位?', '提示', {
@@ -124,5 +107,4 @@
 </script>
 
 <style lang='less' scoped>
-
 </style>

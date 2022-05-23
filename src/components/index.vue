@@ -126,7 +126,7 @@
 </script>
 
 <style lang='less' >
-@heightHeader:36px;
+@heightHeader:60px;
 @widthNav: 200px;
 .home_page{
     height: 100vh;
@@ -136,7 +136,7 @@
         top:0;
         left:0;
         height:@heightHeader;
-        background-color: #324157;
+        background-color: rgba(#007ED5, .8);
         .user{
             float:right;
             margin-right:30px;
@@ -148,11 +148,11 @@
         }
         .logo{
             float:left;
-            color:#409EFF;
-            font-style: oblique;
+            color:#fff;
             line-height: @heightHeader;
-            font-size: 16px;
-            padding-left: 15px;
+            padding-left: 25px;
+            font-size: 22px;
+            font-weight: bold;
         }
     }
     .home_bot{
