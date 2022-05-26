@@ -25,7 +25,7 @@
             :headers ="headers"
             :data="{type:2}"
             :show-file-list="false">
-            <img v-if="guidePic" :src="guidePic" class="avatar">
+            <img v-if="picUrl" :src="picUrl" class="avatar">
             <template v-else>
                 <i class="el-icon-upload"></i>
                 <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -33,19 +33,8 @@
         </el-upload>
     </div>
     <div class="line">
-        <div class="word">菜单</div>
-        <el-select v-model="menuCode" clearable placeholder="请选择" >
-            <el-option
-            v-for="item in lists"
-            :key="item.code"
-            :label="item.name"
-            :value="item.code">
-            </el-option>
-        </el-select>
-    </div>
-    <div class="line">
-        <div class="word">菜单ID</div>
-        <el-input v-model="linkId" autocomplete="off"></el-input>
+        <div class="word">链接地址</div>
+        <el-input v-model="linkUrl" autocomplete="off"></el-input>
     </div>
     <div class="btn_box">
         <el-button plain @click="cancelAdd">取消</el-button>
@@ -55,7 +44,7 @@
 </template>
 
 <script>
-import {apiContextPath,getMenuList,setBannerItem} from '@/apis/home';
+import {apiContextPath,getBannerDetail,setBannerItem} from '@/apis/home';
 const imgSite = apiContextPath + '/upload' ;
 const siteList =[
     {type:1, title:'上部轮播图'},
@@ -69,37 +58,48 @@ export default {
             headers:{
                 'access-token':sessionStorage.getItem('access_token')
             },
-            guidePic:'',
-            lists: [],
+            picUrl:'',
             type:'',
             sort:'',
-            menuCode:'',
-            linkId:''
+            linkUrl:''
         }
     },
     created(){
-        this.getData();
+        if(this.$route.query.id){
+            this.getDetail(this.$route.query.id)
+        }
     },
     methods:{
-        getData(){
-            getMenuList().then(res =>{
-                this.lists = res.data;
+        getDetail(id){
+            getBannerDetail(id).then(res =>{
+                const data = res.data;
+                this.picUrl = data.picUrl;
+                this.type = data.type;
+                this.sort = data.sort;
+                this.linkUrl = data.linkUrl;
             });
         },
         uploadSuccess(res,file){
-            this.guidePic =  file.response.data;
+            this.picUrl =  file.response.data;
         },
         cancelAdd(){
             this.$router.push('/banner');
         },
         submitAdd(){
-            const {type,sort,menuCode, linkId,guidePic} = this;
-            const params = {type,sort,menuCode, linkId,guidePic};
-            setBannerItem(params).then(res =>{
-                if(res.code === 0){
-                    this.$router.push('/banner');
-                }
-            })
+            const {type,sort, linkUrl,picUrl} = this;
+            const params = {type,sort, linkUrl,picUrl};
+            const id =this.$route.query.id;
+            if(id){
+
+            }else{
+                setBannerItem(params).then(res =>{
+                    if(res.code === 0){
+                        this.$message.success('添加成功');
+                        this.$router.push('/banner');
+                    }
+                })
+            }
+            
             
         }
     }

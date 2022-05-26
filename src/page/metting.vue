@@ -1,13 +1,8 @@
 <template>
     <div class='banner_page'>
         <div class="bar">
-            <span class="label">会议通知：</span>
-            <div class="value">
-                <div class="answer" v-html="meeting1"></div>
-            </div>
-            <div class="btn_box">
-                <router-link to="/richTextEdit/meeting1">去编辑</router-link>
-            </div>
+            <div class="label2">会议通知</div>
+            <notice-list></notice-list>
         </div>
         <div class="bar">
             <span class="label">承接会议：</span>
@@ -27,37 +22,19 @@
                 <router-link to="/richTextEdit/meeting3">去编辑</router-link>
             </div>
         </div>
-        <div class="bar">
-            <span class="label">联系赞助：</span>
-            <div class="value">
-                <div class="answer" v-html="meeting4"></div>
-            </div>
-            <div class="btn_box">
-                <router-link to="/richTextEdit/meeting4">去编辑</router-link>
-            </div>
-        </div>
-        <div class="bar">
-            <span class="label">接洽方式：</span>
-            <div class="value">
-                <div class="answer" v-html="meeting5"></div>
-            </div>
-            <div class="btn_box">
-                <router-link to="/richTextEdit/meeting5">去编辑</router-link>
-            </div>
-        </div>
     </div>
 </template>
 
 <script>
     import {getMeetingAdv, getMeetingContact, getMeetingSponsor, getMeetingNotice, getMeetingUndertake} from '@/apis/home';
+    import noticeList from './service/noticeList';
     export default {
+        components:{noticeList},
         data () {
             return {
                 meeting1: '',
                 meeting2: '', 
                 meeting3: '',
-                meeting4:'',
-                meeting5:''
             };
         },
         mounted () {
@@ -66,9 +43,7 @@
         methods: {
             getData(){
                 getMeetingAdv().then(res =>{this.meeting3 = res.data?res.data.content : ''});
-                getMeetingContact().then(res =>{this.meeting5 = res.data?res.data.content : ''});
-                getMeetingSponsor().then(res =>{this.meeting4 = res.data?res.data.content : ''});
-                getMeetingNotice().then(res =>{this.meeting1 = res.data?res.data.content : ''});
+                //getMeetingNotice().then(res =>{this.meeting1 = res.data?res.data.content : ''});
                 getMeetingUndertake().then(res =>{this.meeting2 =res.data?res.data.content : ''});
             }
             
@@ -95,6 +70,10 @@
             .temp>div:last-child{
                 margin-top:10px;
             }
+        }
+        .label2{
+            font-weight: bold;
+            margin:20px 0;
         }
         .label{
             font-weight: bold;

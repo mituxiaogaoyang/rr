@@ -8,25 +8,24 @@
                 width="50">
             </el-table-column>
             <el-table-column
-                prop="position"
+                prop="siteName"
                 label="类型"
-                width="210">
+                width="180">
             </el-table-column>
             <el-table-column
                 prop="name"
                 label="图片"
-                width="150">
+                >
                 <template slot-scope="scope">
-                    <span>{{scope.row.status?'已发布':'未发布'}}</span>
+                    <div class="img_box"><img :src="scope.row.picUrl" alt=""></div>
                 </template>
             </el-table-column>
             <el-table-column
-                prop="linkMenu"
-                label="菜单">
-            </el-table-column>
-            <el-table-column
-                prop="linkId"
-                label="id">
+                prop="linkUrl"
+                label="链接地址">
+                <template slot-scope="scope">
+                    <a :href="scope.row.linkUrl" target="_blank">{{scope.row.linkUrl}}</a>
+                </template>
             </el-table-column>
             <el-table-column
                 prop="address"
@@ -50,7 +49,11 @@
 
 <script>
     import bannerAdd from '@/components/bannerAdd.vue'; 
-    import {getMenuList, getCompanyInfo, deleteJob} from '@/apis/home';
+    import {getBannerList, getCompanyInfo, deleteJob} from '@/apis/home';
+    const siteList =[
+        {type:1, title:'上部轮播图'},
+        {type:2, title:'中部轮播图'},
+    ]
     export default {
         components: {bannerAdd},
         data () {
@@ -68,9 +71,12 @@
         },
         methods: {
             getData(i){
-                getCompanyInfo().then(res =>{
+                getBannerList().then(res =>{
                     this.page.total = res.totalCount;
-                    const lists = res.items;
+                    const lists = res.data;
+                    lists.forEach(list =>{
+                        list.siteName = siteList.find(item => item.type == list.type).title;
+                    })
                     this.tableData = lists;
                 });
             },
@@ -84,7 +90,7 @@
                 if(row.publishState){
                     this.$message.warning('不能编辑已发布内容，如需修改，请取消发布');
                 }else{
-                    this.$router.push({path:'/addJob',query:{id:row.id}});
+                    this.$router.push({path:'/addBanner',query:{id:row.id}});
                 }
             },
             remove(id){
@@ -107,4 +113,10 @@
 </script>
 
 <style lang='less' scoped>
+.img_box{
+    max-width:400px;
+    display: block;
+    max-height: 80px;
+    overflow: hidden;
+}
 </style>

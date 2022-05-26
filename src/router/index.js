@@ -19,6 +19,7 @@ import fileManager from '@/page/fileManager';
 import addBanner from '@/components/bannerAdd';
 import otherApp from '@/page/otherApp';
 import appDetail from '@/page/app/appDetail';
+import noticeDetail from '@/page/service/noticeDetail';
 Vue.use(VueRouter);
 
 const routes = [
@@ -126,6 +127,11 @@ const routes = [
         path: '/fileManager',
         name:'fileManager',
         component:fileManager,
+      },
+      {
+        path: '/noticeDetail',
+        name: 'noticeDetail',
+        component: noticeDetail,
       },
     ]
   }

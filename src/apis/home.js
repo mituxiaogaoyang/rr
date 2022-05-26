@@ -256,34 +256,34 @@ export function setBannerImg(guidepic){
 }
 //train
 export function getTrainAdv(){
-    return apiService.get(apiContextPath + '/training/advantage/feature/get');
+    return apiService.get(apiContextPath + '/train/advantage/feature/get');
 }
 export function setTrainAdv(content){
-    return apiService.post(apiContextPath + '/training/advantage/feature/edit',{content});
+    return apiService.post(apiContextPath + '/train/advantage/feature/edit',{content});
 }
 export function getTrainContact(){
-    return apiService.get(apiContextPath + '/training/contact/method/get');
+    return apiService.get(apiContextPath + '/train/contact/method/get');
 }
 export function setTrainContact(content){
-    return apiService.post(apiContextPath + '/training/contact/method/edit',{content});
+    return apiService.post(apiContextPath + '/train/contact/method/edit',{content});
 }
 export function getTrainSponsor(){
-    return apiService.get(apiContextPath + '/training/contact/sponsor/get');
+    return apiService.get(apiContextPath + '/train/contact/sponsor/get');
 }
 export function setTrainSponsor(content){
-    return apiService.post(apiContextPath + '/training/contact/sponsor/edit',{content});
+    return apiService.post(apiContextPath + '/train/contact/sponsor/edit',{content});
 }
 export function getTrainNotice(){
-    return apiService.get(apiContextPath + '/training/notice/get');
+    return apiService.get(apiContextPath + '/train/notice/get');
 }
 export function setTrainNotice(content){
-    return apiService.post(apiContextPath + '/training/notice/edit',{content});
+    return apiService.post(apiContextPath + '/train/notice/edit',{content});
 }
 export function getTrainService(){
-    return apiService.get(apiContextPath + '/training/service/content/get');
+    return apiService.get(apiContextPath + '/train/service/content/get');
 }
 export function setTrainService(content){
-    return apiService.post(apiContextPath + '/training/service/content/edit',{content});
+    return apiService.post(apiContextPath + '/train/service/content/edit',{content});
 }
 //file
 export function getFilesRecord(data){
@@ -293,11 +293,20 @@ export function addFile(data){
     return apiService.post(apiContextPath + '/fileElement/save',data);
 }
 //index 
-export function getMenuList(){
-    return apiService.get(apiContextPath + '/company/menu/list');
+export function getBannerList(){
+    return apiService.get(apiContextPath + '/index/query');
+}
+export function getBannerDetail(id) {
+    return apiService.get(apiContextPath + '/index/get',{id});
 }
 export function setBannerItem(content){
-    return apiService.get(apiContextPath + '/company/guidepic/edit',content);
+    return apiService.post(apiContextPath + '/index/save', content);
+}
+export function updateBannerItem(content) {
+    return apiService.post(apiContextPath + '/index/update', content);
+}
+export function deleteBanner(id){
+    return apiService.post(apiContextPath + '/index/del',{id});
 }
 //分页查询产品
 export function getAppList(params){
@@ -317,4 +326,40 @@ export function getCaltpp() {
 }
 export function getAppXC() {
     return apiService.get(apiContextPath + '/product/xc/get');
+}
+//服务
+export const statesService = [
+    { label: '禁用', val: 0 },
+    { label: '启用', val: 1 },
+];
+export function getTrainNotices(data) {
+    return apiService.get(apiContextPath + '/train/notice/query', { ...data, pageSize });
+}
+export function getMeetingNotices(data) {
+    return apiService.get(apiContextPath + '/meeting/notice/query', { ...data, pageSize });
+}
+export function addNotice(data,type) {
+    // type: meeting train 
+    return apiService.post(apiContextPath +'/'+ type + '/notice/save', data);
+}
+export function updateNotice(data, type) {
+    // type: meeting train 
+    return apiService.post(apiContextPath + '/' + type + '/notice/update', data);
+}
+export function changeStatus(id, type,isOpen) {//改变状态
+    // type: meeting train  isOpen:enable disable
+    return apiService.post(apiContextPath +'/'+ type +'/notice/'+isOpen, {id});
+}
+export function deleteNotice(id, type) {
+    // type: meeting train 
+    let url;
+    if (type === 'meeting'){
+        url = '/meeting/notice/del'
+    }else{
+        url = '/train/del'
+    }
+    return apiService.post(apiContextPath + url, {id});
+}
+export function getNoticeDetail(id,type) {
+    return apiService.get(apiContextPath +'/'+ type + '/notice/get',{id});
 }

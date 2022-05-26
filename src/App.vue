@@ -38,4 +38,8 @@ body{
   text-align: center;
   background-color: #f1f1f1;
 }
+img{
+  max-width: 100%;
+  max-height:100%;
+}
 </style>
