@@ -1,5 +1,6 @@
 <template>
   <div id="noticeDetail">
+    <div class="title">{{typeName + pageName}}</div>
     <div class="line">
         标题 ：
         <el-input v-model="title" autocomplete="off"></el-input>
@@ -25,12 +26,30 @@ export default {
   data() {
     return {
       title: '',
-      contentText:''
+      contentText:'',
+      typeName: '新增',
+      pageName: '',
     }
   },
   mounted() {
     const id = this.$route.query.id;
-    if(id) this.getNoticeDetail(id);
+    const type =  this.$route.query.type;
+    switch(type){
+      case 'tec':
+        this.pageName = '专家服务介绍';break;
+      case 'successcase':
+        this.pageName = '成功案例';break;
+      case 'meeting':
+        this.pageName = '会议通知';break;
+      case 'train':
+        this.pageName = '培训通知';break;
+    }
+    if(id) {
+      this.typeName = '编辑';
+      this.getNoticeDetail(id);
+    }else{
+      this.typeName = '新增';
+    }
   },
   methods: {
     getNoticeDetail(id){
@@ -69,6 +88,13 @@ export default {
 <style lang="less" >
 #noticeDetail{
   padding:20px;
+  .title{
+    color:#000;
+    margin:15px 0 30px;
+    font-size: 16px;
+    text-align: center;
+    font-weight: bold;
+  }
   .line{
     margin:15px 0;
   }

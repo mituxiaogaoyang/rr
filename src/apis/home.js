@@ -50,7 +50,7 @@ export const navList= [
                 path: '/train',
             },{
                 name: '材料研究及咨询',
-                path: 'caltpp',
+                path: 'tecAndConsult',
             }
         ]
     },{
@@ -308,6 +308,7 @@ export function updateBannerItem(content) {
 export function deleteBanner(id){
     return apiService.post(apiContextPath + '/index/del',{id});
 }
+
 //分页查询产品
 export function getAppList(params){
     return apiService.get(apiContextPath + '/product/query',params);
@@ -338,17 +339,36 @@ export function getTrainNotices(data) {
 export function getMeetingNotices(data) {
     return apiService.get(apiContextPath + '/meeting/notice/query', { ...data, pageSize });
 }
+export function getTecList(data) {//专家服务
+    return apiService.get(apiContextPath + '/tec/query', { ...data, pageSize });
+}
+export function getSuccessCases(data) {
+    return apiService.get(apiContextPath + '/successcase/query', { ...data, pageSize });
+}
 export function addNotice(data,type) {
     // type: meeting train 
-    return apiService.post(apiContextPath +'/'+ type + '/notice/save', data);
+    if (type === 'tec' || type === 'successcase') {
+        return apiService.post(apiContextPath + '/' + type + '/save', data);
+    } else {
+        return apiService.post(apiContextPath +'/'+ type + '/notice/save', data);
+    }
 }
 export function updateNotice(data, type) {
     // type: meeting train 
-    return apiService.post(apiContextPath + '/' + type + '/notice/update', data);
+    if (type === 'tec' || type === 'successcase') {
+        return apiService.post(apiContextPath + '/' + type + '/update', data);
+    } else {
+        return apiService.post(apiContextPath + '/' + type + '/notice/update', data);
+    }
 }
 export function changeStatus(id, type,isOpen) {//改变状态
     // type: meeting train  isOpen:enable disable
-    return apiService.post(apiContextPath +'/'+ type +'/notice/'+isOpen, {id});
+    if (type === 'tec' || type === 'successcase') {
+        return apiService.post(apiContextPath + '/' + type + '/' + isOpen, { id });
+    }else{
+        return apiService.post(apiContextPath + '/' + type + '/notice/' + isOpen, { id });
+    }
+    
 }
 export function deleteNotice(id, type) {
     // type: meeting train 
@@ -356,10 +376,19 @@ export function deleteNotice(id, type) {
     if (type === 'meeting'){
         url = '/meeting/notice/del'
     }else{
-        url = '/train/del'
+        url = '/' + type+'/del'
     }
     return apiService.post(apiContextPath + url, {id});
 }
-export function getNoticeDetail(id,type) {
-    return apiService.get(apiContextPath +'/'+ type + '/notice/get',{id});
+export function getNoticeDetail(id, type) { //培训服务 会议服务  | 国际专家服务-tec  成功案例-successcase
+    if (type === 'tec' || type === 'successcase') {
+        return apiService.get(apiContextPath + '/' + type + '/get', { id });
+    }else{
+        return apiService.get(apiContextPath + '/' + type + '/notice/get', { id });
+    }
+    
+}
+//consult
+export function getConsultList(params) {
+    return apiService.get(apiContextPath + '/consult/query', {...params,pageSize});
 }

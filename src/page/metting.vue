@@ -92,9 +92,6 @@
                 font-size: 12px;
             }
         }
-        .upload-demo{
-            margin:12px 100px;
-        }
     }
 }
 </style>

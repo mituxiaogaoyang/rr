@@ -49,7 +49,7 @@
 
 <script>
     import bannerAdd from '@/components/bannerAdd.vue'; 
-    import {getBannerList, getCompanyInfo, deleteJob} from '@/apis/home';
+    import {getBannerList, deleteBanner, deleteJob} from '@/apis/home';
     const siteList =[
         {type:1, title:'上部轮播图'},
         {type:2, title:'中部轮播图'},
@@ -94,12 +94,12 @@
                 }
             },
             remove(id){
-                this.$confirm('确定删除该职位?', '提示', {
+                this.$confirm('确定删除该条记录?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                     }).then(() => {
-                        deleteJob(id).then(res =>{
+                        deleteBanner(id).then(res =>{
                             this.$message.success('删除成功');
                             this.getData();
                         });

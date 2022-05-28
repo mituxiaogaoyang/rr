@@ -70,10 +70,11 @@
 </template>
 
 <script type="text/javascript">
-import {statesService,getTrainNotices,getMeetingNotices, changeStatus, deleteNotice} from '@/apis/home';
+import {statesService,getTrainNotices,getMeetingNotices,getTecList,getSuccessCases, changeStatus, deleteNotice} from '@/apis/home';
 import moment from 'moment';
 export default {
   name: "notices",
+  props: ['listType'],
   data() {
     return {
       title: '',
@@ -88,7 +89,7 @@ export default {
   },
   watch:{
       '$route'(nV){
-				this.getData();
+			this.getData();
       }
   },
   mounted() {
@@ -101,36 +102,57 @@ export default {
             page: page,
             title: this.title
         };
-				this.status !== '' && (obj.status =this.status);
-				const route = this.$route.name; //metting
-				this.routePage =  route;
-				if(route === 'metting'){
-					
-					getMeetingNotices(obj).then(res =>{    
-							const lists = res.items;      
-							this.page.total = res.totalCount;
-							this.tableData = lists;
-					});
-				}else{
-					getTrainNotices(obj).then(res =>{    
-							const lists = res.items;      
-							this.page.total = res.totalCount;
-							this.tableData = lists;
-					});
-				}
+        this.status !== '' && (obj.status =this.status);
+        const route = this.$route.name; //metting
+        this.routePage =  route;
+        if(route === 'metting'){
+            getMeetingNotices(obj).then(res =>{    
+                    const lists = res.items;      
+                    this.page.total = res.totalCount;
+                    this.tableData = lists;
+            });
+        }else if(route === 'train'){
+            getTrainNotices(obj).then(res =>{    
+                const lists = res.items;      
+                this.page.total = res.totalCount;
+                this.tableData = lists;
+            });
+        }else{
+            if(this.listType === 'tec'){
+                getTecList(obj).then(res =>{    
+                    const lists = res.items;      
+                    this.page.total = res.totalCount;
+                    this.tableData = lists;
+                });
+            }else{
+                getSuccessCases(obj).then(res =>{    
+                    const lists = res.items;      
+                    this.page.total = res.totalCount;
+                    this.tableData = lists;
+                });
+            }
+            
+        }
         
     },
     search(){
       this.getData(1);
     },
     addList(id){
-				console.log(id)
-				const type = this.routePage==='metting'?'meeting':'train'; //metting
-				let route = '/noticeDetail?type='+type;
-				if(id){
-					route = route+ '&id=' +id;
-				}
-				this.$router.push(route);
+        console.log(id)
+        let type = ''; //metting
+        if(this.routePage==='metting'){
+            type = 'meeting';
+        }else if(this.routePage==='train'){
+            type = 'train';
+        }else{ //tecandconsult
+            type = this.listType;
+        }
+        let route = '/noticeDetail?type='+type;
+        if(id){
+            route = route+ '&id=' +id;
+        }
+        this.$router.push(route);
     },
     handleCurrentChange(i){
         this.page.current = i;
@@ -142,32 +164,46 @@ export default {
             return "";
         }
         return moment(date).format("YYYY-MM-DD HH:mm:ss");
-		},
-		changeStatus(row){
-			const type = this.routePage==='metting'?'meeting':'train'; //metting
-			const isOpen = row.status?'disable':'enable'; //metting
-			changeStatus(row.id, type,isOpen).then(res =>{
-				this.$message.success('修改成功');
-				this.getData();
-			})
-		},
-		remove(id){
-			this.$confirm('确定删除该通知?', '提示', {
-				confirmButtonText: '确定',
-				cancelButtonText: '取消',
-				type: 'warning'
-				}).then(() => {
-						const type = this.routePage==='metting'?'meeting':'train';
-						deleteNotice(id,type).then(res =>{
-							this.$message.success('删除成功');
-							this.getData();
-						})
-				
-				}).catch(() => {
-										
-				});
-		
-		}
+    },
+    changeStatus(row){
+        let type = ''; //metting
+        if(this.routePage==='metting'){
+            type = 'meeting';
+        }else if(this.routePage==='train'){
+            type = 'train';
+        }else{ //tecandconsult
+            type = this.listType;
+        }
+        const isOpen = row.status?'disable':'enable'; //metting
+        changeStatus(row.id, type,isOpen).then(res =>{
+            this.$message.success('修改成功');
+            this.getData();
+        })
+    },
+    remove(id){
+        this.$confirm('确定删除该记录?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+            }).then(() => {
+                    let type = ''; //metting
+                    if(this.routePage==='metting'){
+                        type = 'meeting';
+                    }else if(this.routePage==='train'){
+                        type = 'train';
+                    }else{ //tecandconsult
+                        type = this.listType;
+                    }
+                    deleteNotice(id,type).then(res =>{
+                        this.$message.success('删除成功');
+                        this.getData();
+                    })
+            
+            }).catch(() => {
+                                    
+            });
+    
+    }
   }
 }
 </script>

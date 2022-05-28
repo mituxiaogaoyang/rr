@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import {apiContextPath,getBannerDetail,setBannerItem} from '@/apis/home';
+import {apiContextPath,getBannerDetail,setBannerItem,updateBannerItem} from '@/apis/home';
 const imgSite = apiContextPath + '/upload' ;
 const siteList =[
     {type:1, title:'上部轮播图'},
@@ -90,7 +90,13 @@ export default {
             const params = {type,sort, linkUrl,picUrl};
             const id =this.$route.query.id;
             if(id){
-
+                params.id = id;
+                updateBannerItem(params).then(res =>{
+                    if(res.code === 0){
+                        this.$message.success('修改成功');
+                        this.$router.push('/banner');
+                    }
+                })
             }else{
                 setBannerItem(params).then(res =>{
                     if(res.code === 0){

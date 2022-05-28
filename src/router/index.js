@@ -20,6 +20,7 @@ import addBanner from '@/components/bannerAdd';
 import otherApp from '@/page/otherApp';
 import appDetail from '@/page/app/appDetail';
 import noticeDetail from '@/page/service/noticeDetail';
+import tecAndConsult from '@/page/service/tecAndConsult';
 Vue.use(VueRouter);
 
 const routes = [
@@ -132,6 +133,11 @@ const routes = [
         path: '/noticeDetail',
         name: 'noticeDetail',
         component: noticeDetail,
+      },
+      {
+        path: '/tecAndConsult',
+        name: 'tecAndConsult',
+        component: tecAndConsult,
       },
     ]
   }
