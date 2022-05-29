@@ -23,7 +23,7 @@
             :action="uploadSite"
             :on-success="uploadSuccess"
             :headers ="headers"
-            :data="{type:2}"
+            :data="{type:1}"
             :show-file-list="false">
             <img v-if="picUrl" :src="picUrl" class="avatar">
             <template v-else>

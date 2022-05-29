@@ -100,3 +100,6 @@ export function select(_this,selectedElements){
         wordsBox.text(words);
     }
 }
+export function removeSelectedClass(){
+    $(".selected").removeClass('selected');
+}

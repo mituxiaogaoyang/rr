@@ -1,44 +1,43 @@
 <template>
   <div id="tecAndConsult">
-    <div class="bar">
-        <div class="label2">专家服务</div>
-        <notice-list listType="tec"></notice-list>
-    </div>
-    <div class="bar">
-        <div class="label2">成功案例</div>
-        <notice-list listType="successcase"></notice-list>
-    </div>
-    <div class="bar">
-        <div class="label2">科技咨询</div>
-        <el-table size="small"  :data="tableData" border>
-          <el-table-column
-              label="序号"
-              type="index"
-              width="90">
-          </el-table-column>
-          <el-table-column
-              prop="title"
-              show-overflow-tooltip
-              label="标题">
-          </el-table-column>
+    <el-tabs type="border-card">
+       <el-tab-pane label="专家服务">
+             <notice-list listType="tec"></notice-list>
+        </el-tab-pane>
+        <el-tab-pane label="成功案例">
+            <notice-list listType="successcase"></notice-list>
+        </el-tab-pane>
+        <el-tab-pane label="科技咨询">
+            <el-table size="small"  :data="tableData" border>
+              <el-table-column
+                  label="序号"
+                  type="index"
+                  width="90">
+              </el-table-column>
+              <el-table-column
+                  prop="title"
+                  show-overflow-tooltip
+                  label="标题">
+              </el-table-column>
 
-          <el-table-column
-              label="状态"
-              width="150">
-              <template slot-scope="scope">
-                  <span>{{scope.row.status?'启用':'禁用'}}</span>
-              </template>
-          </el-table-column>
-        </el-table>
-        <el-pagination
-          small
-          layout="prev, pager, next"
-          :page-size="10"
-          :current-page='page.current'
-          @current-change="handleCurrentChange"
-          :total="page.total">
-      </el-pagination>
-    </div>
+              <el-table-column
+                  label="状态"
+                  width="150">
+                  <template slot-scope="scope">
+                      <span>{{scope.row.status?'启用':'禁用'}}</span>
+                  </template>
+              </el-table-column>
+            </el-table>
+            <el-pagination
+              small
+              layout="prev, pager, next"
+              :page-size="10"
+              :current-page='page.current'
+              @current-change="handleCurrentChange"
+              :total="page.total">
+          </el-pagination>
+        </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
@@ -58,12 +57,13 @@ export default {
     }
   },
   mounted() {
+    this.getConsultList();
   },
   methods: {
-    getConsultList(){
+    getConsultList(i){
+      const page = i || 1;
       let obj = {
-          page: page,
-          
+          page: page,  
       };
       getConsultList(obj).then(res =>{
         

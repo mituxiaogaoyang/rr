@@ -286,11 +286,26 @@ export function setTrainService(content){
     return apiService.post(apiContextPath + '/train/service/content/edit',{content});
 }
 //file
-export function getFilesRecord(data){
+export function getFilesRecord(data){//下载记录
     return apiService.get(apiContextPath + '/fileDownload/record/query',{...data,pageSize});
+}
+export function getFilesStatistic(data){//下载统计
+    return apiService.get(apiContextPath + '/fileDownload/statistics/query',{...data,pageSize});
 }
 export function addFile(data){
     return apiService.post(apiContextPath + '/fileElement/save',data);
+}
+export function getFilesList(data){
+    return apiService.get(apiContextPath + '/fileElement/query',{...data,pageSize});
+}
+export function changeStatusFile(id,isOpen) {//改变状态
+    return apiService.post(apiContextPath + '/fileElement/' + isOpen, { id });
+}
+export function deleteFile(id){
+    return apiService.post(apiContextPath + '/fileElement/del',{id});
+}
+export function getFileDetail(id) {
+    return apiService.get(apiContextPath + '/fileElement/get',{id});
 }
 //index 
 export function getBannerList(){

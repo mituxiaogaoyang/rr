@@ -11,16 +11,8 @@
                 <div class="val elements"><el-tag v-for=" k in selectedElements" :key="k">{{k}}</el-tag></div>
             </div>
             <div class="line">
-                <div class="label">文件名称：</div>
-                <div class="val"><el-input v-model="fileName" placeholder="请输入内容"></el-input></div>
-            </div>
-            <div class="line">
-                <div class="label">文件源名称：</div>
-                <div class="val"><el-input v-model="fileSourceName" placeholder="请输入内容"></el-input></div>
-            </div>
-            <div class="line">
                 <div class="label">文件价格：</div>
-                <div class="val"><el-input v-model="price" placeholder="请输入内容"></el-input></div>
+                <div class="val"><el-input v-model="price" placeholder="请输入价格"></el-input></div>
             </div>
             <div class="line">
                 <div class="label">文件上传：</div>
@@ -30,11 +22,29 @@
                         :action="uploadSite"
                         :on-success="uploadSuccess"
                         :headers ="headers"
-                        :data="{type:1}"
+                        :data="{type:0}"
                         :limit="1"
                         :file-list ="files"
                         :show-file-list="true">
                         <el-button size="small" type="primary">点击上传</el-button>
+                    </el-upload>
+                </div>
+            </div>
+            <div class="line">
+                <div class="label">文件预览图：</div>
+                <div class="val">
+                    <el-upload
+                        class="upload_img"
+                        :action="uploadSite"
+                        :on-success="uploadSuccess2"
+                        :headers ="headers"
+                        :data="{type:1}"
+                        :show-file-list="false">
+                        <img v-if="previewPic" :src="previewPic" class="avatar">
+                        <template v-else>
+                            <i class="el-icon-upload"></i>
+                            <div class="el-upload__text"><em>点击上传</em></div>
+                        </template>
                     </el-upload>
                 </div>
             </div>
@@ -46,7 +56,7 @@
 <script>
 import $ from 'jquery';
 import data from '../utils/periodicTable';
-import {deal, select} from '../utils/pTable';
+import {deal, select,removeSelectedClass} from '../utils/pTable';
 import '../utils/pTable.css';
 import { apiContextPath, addFile} from '@/apis/home';
 const imgSite = apiContextPath + '/upload' ;
@@ -60,8 +70,8 @@ export default {
             headers:{
                 'access-token':sessionStorage.getItem('access_token')
             },
-            fileName:'',
             fileSourceName:'',
+            previewPic:'',
             price: '',
             files:[]
         };
@@ -76,20 +86,27 @@ export default {
     },
     methods: {
         uploadSuccess(res,file){
+            console.log(file)
+            this.fileSourceName = file.name;
             this.path =  file.response.data;
         },
+        uploadSuccess2(res,file){
+            this.previewPic =  file.response.data;
+        },
         onSubmit(){
-            const {fileName, fileSourceName, price,  path, selectedElements} = this;
-            if(fileName && price&&fileSourceName &&  path && selectedElements.length){
+            const {fileSourceName, price,previewPic,  path, selectedElements} = this;
+            if( price&&fileSourceName && previewPic && path && selectedElements.length){
                 const elementCodes = selectedElements.join(',');
-                addFile({fileName,fileSourceName,price,path,elementCodes}).then(res =>{
+                addFile({fileSourceName,previewPic,price,path,elementCodes}).then(res =>{
                     this.$message.success('新添成功');
-                    this.fileName ='';
                     this.fileSourceName ='';
                     this.price ='';
                     this.selectedElements = [];
                     this.path ='';
                     this.files = [];
+                    this.previewPic = '';
+                    this.$emit('updateList');
+                    removeSelectedClass();
                 });
             }else{
                 this.$message.warning('提交信息不完整')
@@ -121,6 +138,16 @@ export default {
             width: 280px;
             .el-input {
                 width: 100%;
+            }
+            .upload_img{
+                width:180px;
+                height:120px;
+                text-align: center;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                align-content: center;
+                border:1px dotted #ccc;
             }
         }
         .elements{

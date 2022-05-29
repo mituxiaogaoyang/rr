@@ -23,12 +23,26 @@
             //初始化富文本编辑器
             const editor = new Editor(this.$refs.editor);
             editor.config.zIndex = 100;
+            //判断页面 上传文件type
+            let type ;
+            const route = this.$route
+            if(route.path.indexOf('appDetail')>-1){//公司产品
+                type =3;
+            }else if(route.path.indexOf('noticeDetail')>-1){
+                if(route.query.type === 'meeting'){
+                    type = 4
+                }else if(route.query.type === 'train'){
+                    type = 5;
+                }else{
+                    type = 6;
+                }
+            }
             editor.config.uploadImgServer = imgSite; // 上传图片到服务器
             editor.config.uploadImgHeaders  = {
                 'access-token': sessionStorage.getItem('access_token')
             };
             editor.config.uploadImgParams = {
-                type: 1,
+                type: type,
             }
             editor.config.uploadFileName = 'file';
             editor.config.onchange = (html) => {
