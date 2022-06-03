@@ -1,7 +1,7 @@
 <template>
     <div class='home_page'>
         <div class="home_ceil">
-            <!-- <div class="logo">长沙锐睿科技有限公司</div> -->
+            <div class="logo">长沙锐睿科技有限公司</div>
             <div class="user">
                 <el-dropdown @command="handleCommand">
                     <span class="el-dropdown-link">{{userName}}</span>
