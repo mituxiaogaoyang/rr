@@ -57,6 +57,9 @@ export const navList= [
         name: '文件管理',
         path: '/fileManager',
     },{
+        name: '订单管理',
+        path: '/orderList',
+    },{
         name: '联系我们',
         path: '/contact',
     },{
@@ -406,4 +409,7 @@ export function getNoticeDetail(id, type) { //培训服务 会议服务  | 国�
 //consult
 export function getConsultList(params) {
     return apiService.get(apiContextPath + '/consult/query', {...params,pageSize});
+}
+export function getOrders(params) {
+    return apiService.get(apiContextPath + '/order/query', {...params,pageSize});
 }

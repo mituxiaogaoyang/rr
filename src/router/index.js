@@ -21,6 +21,7 @@ import otherApp from '@/page/otherApp';
 import appDetail from '@/page/app/appDetail';
 import noticeDetail from '@/page/service/noticeDetail';
 import tecAndConsult from '@/page/service/tecAndConsult';
+import orderList from '@/page/orderList'
 Vue.use(VueRouter);
 
 const routes = [
@@ -51,7 +52,7 @@ const routes = [
       },
       {
         path: '/addBanner',
-        name:'banner',
+        name:'bannerAdd',
         component:addBanner,
       },
       {
@@ -138,6 +139,11 @@ const routes = [
         path: '/tecAndConsult',
         name: 'tecAndConsult',
         component: tecAndConsult,
+      },
+      {
+        path: '/orderList',
+        name: 'orderList',
+        component: orderList,
       },
     ]
   }

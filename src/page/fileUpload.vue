@@ -84,6 +84,9 @@ export default {
             select(_this,_instance.selectedElements)
         })
     },
+    destroyed (){
+        $('body').off('click');
+    },
     methods: {
         uploadSuccess(res,file){
             console.log(file)

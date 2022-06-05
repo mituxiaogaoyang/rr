@@ -32,7 +32,7 @@ function clearfix(container) {
 
 // get JSON data
 export function deal(data) {
-    console.log($('#table'));
+    //console.log($('#table'));
 
     // build main table
     for (var i = 0; i < data.table.length; i++) {
@@ -79,7 +79,7 @@ export function deal(data) {
     
 // });
 export function select(_this,selectedElements){
-    console.log(_this,selectedElements)
+    //console.log(_this,selectedElements)
     var wordsBox = $("#selected"), words;
     var element = _this.children('.symbol').text();
     if(_this.hasClass('selected')){
