@@ -5,6 +5,15 @@
             <notice-list></notice-list>
         </div>
         <div class="bar">
+            <span class="label">联系赞助-<br/>接洽方式：</span>
+            <div class="value">
+                <div class="answer" v-html="train4"></div>
+            </div>
+            <div class="btn_box">
+                <router-link to="/richTextEdit/train4">去编辑</router-link>
+            </div>
+        </div>
+        <div class="bar">
             <span class="label">服务内容：</span>
             <div class="value">
                 <div class="answer" v-html="train2"></div>
@@ -46,7 +55,7 @@
             getData(){
                 getTrainAdv().then(res =>{this.train3 =res.data?res.data.content : ''});
                 //getTrainContact().then(res =>{this.train5 = res.data?res.data.content : ''});
-                //getTrainSponsor().then(res =>{this.train4 = res.data?res.data.content : ''});
+                getTrainSponsor().then(res =>{this.train4 = res.data?res.data.content : ''});
                 //getTrainNotice().then(res =>{this.train1 = res.data?res.data.content : ''});
                 getTrainService().then(res =>{this.train2 = res.data?res.data.content : ''});
             }
@@ -87,7 +96,7 @@
         }
         .btn_box{
             position: absolute;
-            top:50px;
+            top:60px;
             left:0;
             a{
                 color:#409EFF;

@@ -218,7 +218,7 @@ export function setMeetingAdv(content){
     return apiService.post(apiContextPath + '/meeting/advantage/feature/edit',{content});
 }
 export function getMeetingContact(){
-    return apiService.get(apiContextPath + '/meeting/contact/method/get');
+    return apiService.get(apiContextPath + '/meeting/contact/sponsor/get');
 }
 export function setMeetingContact(content){
     return apiService.post(apiContextPath + '/meeting/contact/method/edit',{content});
@@ -346,6 +346,9 @@ export function getCaltpp() {
 export function getAppXC() {
     return apiService.get(apiContextPath + '/product/xc/get');
 }
+export function deleteApp(id) {
+    return apiService.post(apiContextPath + '/product/del', { id });
+}
 //服务
 export const statesService = [
     { label: '禁用', val: 0 },
@@ -387,6 +390,9 @@ export function changeStatus(id, type,isOpen) {//改变状态
         return apiService.post(apiContextPath + '/' + type + '/notice/' + isOpen, { id });
     }
     
+}
+export function changeAppStatus(id, isOpen) {
+    return apiService.post(apiContextPath + '/product/' + isOpen, { id });
 }
 export function deleteNotice(id, type) {
     // type: meeting train 

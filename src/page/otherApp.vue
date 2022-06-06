@@ -31,6 +31,7 @@
                 align="center"
                 width="180">
                 <template slot-scope="scope">
+                    <el-button @click="changeStatus(scope.row)" type="text" size="small">{{scope.row.status?'禁用':'启用'}}</el-button>
                     <el-button @click="modify(scope.row)" type="text" size="small">编辑</el-button>
                     <el-button @click="remove(scope.row.id)" type="text" size="small">删除</el-button>
                 </template>
@@ -49,7 +50,7 @@
 <script>
     import bannerAdd from '@/components/bannerAdd.vue'; 
     import moment from 'moment';
-    import {getAppList, getCompanyInfo, deleteJob} from '@/apis/home';
+    import {getAppList, getCompanyInfo, deleteApp,changeAppStatus} from '@/apis/home';
     export default {
         components: {bannerAdd},
         data () {
@@ -83,9 +84,9 @@
                     lists.forEach(item =>{
                         let time;
                         if(item.updateTime){
-                            time = moment(item.updateTime).format('YYYY-MM-DD');
+                            time = moment(item.updateTime).format('YYYY-MM-DD HH:mm:ss');
                         }else{
-                            time = moment(item.createTime).format('YYYY-MM-DD');
+                            time = moment(item.createTime).format('YYYY-MM-DD HH:mm:ss');
                         }
                         item.time = time;
                         item.statusName = item.status?'启用':'禁用';
@@ -104,13 +105,21 @@
                 const type = this.$route.query.type;
                 this.$router.push({path:'/appDetail',query:{type,id:row.id}});
             },
+            changeStatus(row){
+                //const type = this.$route.query.type;
+                const isOpen = row.status?'disable':'enable'; //metting
+                changeAppStatus(row.id,isOpen).then(res =>{
+                    this.$message.success('修改成功');
+                    this.getData();
+                })
+            },
             remove(id){
-                this.$confirm('确定删除该职位?', '提示', {
+                this.$confirm('确定删除该数据?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                     }).then(() => {
-                        deleteJob(id).then(res =>{
+                        deleteApp(id).then(res =>{
                             this.$message.success('删除成功');
                             this.getData();
                         });

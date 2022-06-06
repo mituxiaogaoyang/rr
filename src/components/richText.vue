@@ -2,7 +2,8 @@
     <div class='newsAdd'>
         <!--  -->
         <div class="title">
-            走进锐睿  > {{pageTitle}}
+            <!-- 走进锐睿  >  -->
+            {{pageTitle}}
         </div>
         
         <div class="line">
@@ -39,12 +40,12 @@
         {page: 'meeting1', word: '会议通知', fun: getMeetingNotice,func2:setMeetingNotice,backRoute: '/metting'},
         {page: 'meeting2', word: '承接会议', fun: getMeetingUndertake,func2:setMeetingUndertake,backRoute: '/metting'},
         {page: 'meeting3', word: '优势与特色', fun: getMeetingAdv,func2:setMeetingAdv,backRoute: '/metting'},
-        {page: 'meeting4', word: '联系赞助', fun: getMeetingSponsor,func2:setMeetingSponsor,backRoute: '/metting'},
+        {page: 'meeting4', word: '联系赞助-接洽方式', fun: getMeetingSponsor,func2:setMeetingSponsor,backRoute: '/metting'},
         {page: 'meeting5', word: '接洽方式', fun: getMeetingContact,func2:setMeetingContact,backRoute: '/metting'},
         {page: 'train1', word: '培训通知', fun: getTrainNotice,func2:setTrainNotice,backRoute: '/train'},
         {page: 'train2', word: '服务内容', fun: getTrainService,func2:setTrainService,backRoute: '/train'},
         {page: 'train3', word: '优势与特色', fun: getTrainAdv,func2:setTrainAdv,backRoute: '/train'},
-        {page: 'train4', word: '联系赞助', fun: getTrainSponsor,func2:setTrainSponsor,backRoute: '/train'},
+        {page: 'train4', word: '联系赞助-接洽方式', fun: getTrainSponsor,func2:setTrainSponsor,backRoute: '/train'},
         {page: 'train5', word: '接洽方式', fun: getTrainContact,func2:setTrainContact,backRoute: '/train'},
    ]
     export default {

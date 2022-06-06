@@ -12,7 +12,7 @@
             </div>
             <div class="line">
                 <div class="label">文件价格：</div>
-                <div class="val"><el-input v-model="price" placeholder="请输入价格"></el-input></div>
+                <div class="val"><el-input v-model="price" type="number" placeholder="请输入价格"></el-input></div>
             </div>
             <div class="line">
                 <div class="label">文件上传：</div>
@@ -37,6 +37,7 @@
                         class="upload_img"
                         :action="uploadSite"
                         :on-success="uploadSuccess2"
+                        accept=".png,.jpg,.jpeg,.gif"
                         :headers ="headers"
                         :data="{type:1}"
                         :show-file-list="false">

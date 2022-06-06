@@ -103,15 +103,32 @@
                 </el-dialog>
             </el-tab-pane>
             <el-tab-pane label="文件下载记录">
+                 <div class="search_box">
+                    <el-input
+                        type="text"
+                        size="small"
+                        clearable
+                        placeholder="请输入文件名称"
+                        style="width:180px"
+                        v-model="filename1">
+                    </el-input>
+                    <el-button type="primary" plain class="btn_add2" size="small" @click="() =>getData()">搜索</el-button>
+                 </div>
                 <el-table  :data="tableData" border>
-                    <el-table-column
+                    <!-- <el-table-column
                         label="序号"
                         type="index"
                         width="80">
-                    </el-table-column>
+                    </el-table-column> -->
                     <el-table-column
                         prop="fileSourceName"
+                        minWidth="130"
                         label="文件名">
+                    </el-table-column>
+                    <el-table-column
+                        prop="orderCode"
+                        minWidth="150"
+                        label="订单号">
                     </el-table-column>
                     <el-table-column
                         prop="userName"
@@ -208,6 +225,7 @@
                     current: 1,
                     total:1
                 },
+                filename1: '',
             };
         },
         mounted () {
@@ -219,6 +237,7 @@
             getData(i){//文件下载记录
                 let obj = {
                     page: i || 1,
+                    fileName: this.filename1
                 };
                 getFilesRecord(obj).then(res =>{
                     const lists = res.items;

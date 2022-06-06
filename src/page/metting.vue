@@ -5,6 +5,15 @@
             <notice-list></notice-list>
         </div>
         <div class="bar">
+            <span class="label">联系赞助-<br/>接洽方式：</span>
+            <div class="value">
+                <div class="answer" v-html="meeting4"></div>
+            </div>
+            <div class="btn_box">
+                <router-link to="/richTextEdit/meeting4">去编辑</router-link>
+            </div>
+        </div>
+        <div class="bar">
             <span class="label">承接会议：</span>
             <div class="value">
                 <div class="answer" v-html="meeting2"></div>
@@ -32,7 +41,7 @@
         components:{noticeList},
         data () {
             return {
-                meeting1: '',
+                meeting4: '',
                 meeting2: '', 
                 meeting3: '',
             };
@@ -43,7 +52,7 @@
         methods: {
             getData(){
                 getMeetingAdv().then(res =>{this.meeting3 = res.data?res.data.content : ''});
-                //getMeetingNotice().then(res =>{this.meeting1 = res.data?res.data.content : ''});
+                getMeetingContact().then(res =>{this.meeting4 = res.data?res.data.content : ''});
                 getMeetingUndertake().then(res =>{this.meeting2 =res.data?res.data.content : ''});
             }
             
@@ -83,7 +92,7 @@
         }
         .btn_box{
             position: absolute;
-            top:50px;
+            top:60px;
             left:0;
             a{
                 color:#409EFF;
