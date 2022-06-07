@@ -1,6 +1,17 @@
 <template>
   <div id="orderList">
     <div class="block">
+        <div class="search_line" style="margin-right:20px">
+            <el-input
+                type="text"
+                clearable
+                placeholder="请输入订单号"
+                @change="getData(1)"
+                style="width:180px"
+                v-model="orderCode">
+            </el-input>
+            <el-button type="primary" plain class="btn_add2" @click="getData(1)">搜索</el-button>
+        </div>
         <div class="search_line">
             <el-select v-model="status" clearable placeholder="订单状态" @change="getData(1)">
                 <el-option
@@ -103,6 +114,7 @@ export default {
             states,
             status:'',
             startTime:'',
+            orderCode:'',
             tableData:[],
             page:{
                 current: 1,
@@ -119,7 +131,8 @@ export default {
             let obj = {
                 page: page,  
                 startTime: this.startTime,
-                status:this.status
+                status:this.status,
+                orderCode: this.orderCode
             };
             getOrders(obj).then(res =>{
                 const lists = res.items;      

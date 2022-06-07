@@ -37,13 +37,13 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-pagination
+        <!-- <el-pagination
             layout="prev, pager, next"
             :page-size="10"
             :current-page='page.current'
             @current-change="handleCurrentChange"
             :total="page.total">
-        </el-pagination>
+        </el-pagination> -->
     </div>
 </template>
 

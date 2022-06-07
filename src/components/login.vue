@@ -22,8 +22,8 @@
     export default {
         data () {
             return {
-                userName: 'test',
-                userPassword: 'admin',
+                userName: '',
+                userPassword: '',
             };
         },
         mounted () {
