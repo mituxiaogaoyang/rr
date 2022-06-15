@@ -18,8 +18,11 @@ import addJob from '@/components/jobAdd';
 import fileManager from '@/page/fileManager';
 import addBanner from '@/components/bannerAdd';
 import otherApp from '@/page/otherApp';
+import database from '@/page/database';
 import appDetail from '@/page/app/appDetail';
 import noticeDetail from '@/page/service/noticeDetail';
+
+import databaseDetail from '@/page/app/databaseDetail';
 import tecAndConsult from '@/page/service/tecAndConsult';
 import orderList from '@/page/orderList'
 Vue.use(VueRouter);
@@ -65,11 +68,11 @@ const routes = [
         name:'appDetail',
         component:appDetail,
       },
-      {
-        path: '/otherApp',
-        name:'allProducts',
-        component:otherApp,
-      },
+      // {
+      //   path: '/otherApp',
+      //   name:'allProducts',
+      //   component:otherApp,
+      // },
       {
         path: '/job',
         name:'job',
@@ -144,6 +147,15 @@ const routes = [
         path: '/orderList',
         name: 'orderList',
         component: orderList,
+      },{
+        path: '/database',
+        name: 'database',
+        component: database,
+      },
+      {
+        path: '/databaseDetail',
+        name: 'databaseDetail',
+        component: databaseDetail,
       },
     ]
   }

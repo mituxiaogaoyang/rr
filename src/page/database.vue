@@ -48,14 +48,11 @@
 </template>
 
 <script>
-    import bannerAdd from '@/components/bannerAdd.vue'; 
     import moment from 'moment';
-    import {getAppList, getCompanyInfo, deleteApp,changeAppStatus} from '@/apis/home';
+    import {getDatabaseList, deleteDatabase,changeDatabaseStatus} from '@/apis/home';
     export default {
-        components: {bannerAdd},
         data () {
             return {
-                visibleAdd:false,
                 tableData:[],
                 page:{
                     current: 1,
@@ -66,19 +63,13 @@
         mounted () {
             this.getData();
         },
-        watch:{
-            '$route.query'(nV){
-                this.getData();
-            }
-        },
         methods: {
             getData(i){
                 const params = {
                     page: this.page.current,
                     pageSize: 10,
-                    type: this.$route.query.type
                 }
-                getAppList(params).then(res =>{
+                getDatabaseList(params).then(res =>{
                     this.page.total = res.totalCount;
                     const lists = res.items;
                     lists.forEach(item =>{
@@ -99,17 +90,15 @@
                 this.getData(i);
             },
             addItem(){
-                const type = this.$route.query.type;
-                this.$router.push('/appDetail?type='+type);
+                this.$router.push('/databaseDetail');
             },
             modify(row){
-                const type = this.$route.query.type;
-                this.$router.push({path:'/appDetail',query:{type,id:row.id}});
+                this.$router.push({path:'/databaseDetail',query:{id:row.id}});
             },
             changeStatus(row){
                 //const type = this.$route.query.type;
                 const isOpen = row.status?'disable':'enable'; //metting
-                changeAppStatus(row.id,isOpen).then(res =>{
+                changeDatabaseStatus(row.id,isOpen).then(res =>{
                     this.$message.success('修改成功');
                     this.getData();
                 })
@@ -120,7 +109,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                     }).then(() => {
-                        deleteApp(id).then(res =>{
+                        deleteDatabase(id).then(res =>{
                             this.$message.success('删除成功');
                             this.getData();
                         });

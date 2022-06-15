@@ -1,13 +1,17 @@
 <template>
   <div id="noticeDetail">
-    <div class="title">{{typeName + pageName}}</div>
+    <div class="title">{{typeName + '数据库'}}</div>
     <div class="line">
         标题 ：
         <el-input v-model="title" autocomplete="off"></el-input>
     </div>
     <div class="line">
+        <div class="word">序号</div>
+        <el-input-number v-model="sort"  :min="1" label="排序"></el-input-number>
+    </div>
+    <div class="line">
         内容：
-        <rich-text :content="contentText" ref="richText2" :includeFile="includeFile"></rich-text>
+        <rich-text :content="contentText" ref="richText2"></rich-text>
     </div>
     <div class="btn_box">
         <el-button plain @click="cancelAdd">取消</el-button>
@@ -18,71 +22,49 @@
 </template>
 
 <script type="text/javascript">
-import {getNoticeDetail,addNotice, updateNotice} from '@/apis/home';
+import {getDatabaseDetail,addDatabase, updateDatabase} from '@/apis/home';
 import richText from '../app/richTextSingle.vue';
 export default {
-  name: "noticeDetail",
+  name: "databaseDetail",
   components: {richText},
   data() {
     return {
       title: '',
       contentText:'',
+      sort:'',
       typeName: '新增',
-      pageName: '',
-      includeFile:false
     }
   },
   mounted() {
     const id = this.$route.query.id;
-    const type =  this.$route.query.type;
-    switch(type){
-      case 'tec':
-        this.pageName = '专家服务介绍';break;
-      case 'successcase':
-        this.pageName = '成功案例';break;
-      case 'meeting':
-        this.pageName = '会议通知';
-        this.includeFile = true;break;
-      case 'train':
-        this.pageName = '培训通知';
-        this.includeFile = true;break;;
-    }
     if(id) {
       this.typeName = '编辑';
-      this.getNoticeDetail(id);
+      this.getDatabaseDetail(id);
     }else{
       this.typeName = '新增';
     }
   },
   methods: {
-    getNoticeDetail(id){
-      const type =  this.$route.query.type;
-      getNoticeDetail(id,type).then(res =>{
-        this.title = res.data.title;
+    getDatabaseDetail(id){
+      getDatabaseDetail(id).then(res =>{
+        this.title = res.data.name;
         this.contentText = res.data.content;
+        this.sort = res.data.sort;
       })
     },
     submitNotice(){
-      const title = this.title;
+      const name = this.title;
+      const sort = this.sort;
       const content = this.$refs.richText2.editorContent;
-      const fileList = this.$refs.richText2.fileList;
-      const params = {content,title};
-      if(fileList && fileList.length){
-        const nameArr = fileList.map(item => item.name);
-        const urlArr = fileList.map(item => item.url);
-        params.attachmentNames= nameArr.join(',');
-        params.attachmentPaths= urlArr.join(',');
-      };
       const id = this.$route.query.id;
-      const type =  this.$route.query.type;
-      if(title &&  content){
+      if(name &&  content){
         if(id){ //update
-          updateNotice({...params,id},type).then(res =>{
+          updateDatabase({content,name,id,sort}).then(res =>{
               this.$message.success('修改成功');
               this.$router.go(-1);
           });
         }else{
-          addNotice(params,type).then(res =>{
+          addDatabase({content,name,sort}).then(res =>{
               this.$message.success('新添成功');
               this.$router.go(-1);
           });

@@ -2,12 +2,16 @@
     <div class="rich_box">
         <div ref="editor" class="editor_page"></div>
         <el-upload
+            v-if = "includeFile"
             class="upload-demo2"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            :action="uploadSite"
+            :headers ="headers"
+            :data="{type:4}"
             :on-remove="handleRemove"
             :on-success="handleSuccess"
             multiple
-            :file-list="fileList">
+            :file-list="fileList"
+            >
             <el-button size="small" type="primary">附件上传</el-button>
         </el-upload>
     </div>
@@ -15,14 +19,19 @@
 </template>
 
 <script>
+// 
     import Editor from 'wangeditor';
     import {apiContextPath} from '@/apis/home';
    const imgSite = apiContextPath + '/upload' ;
     export default {
-        props:['content'],
+        props:['content','includeFile'],
         data () {
             return {
-               fileList:[{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
+                headers:{
+                    'access-token':sessionStorage.getItem('access_token')
+                },
+                uploadSite: imgSite,
+               fileList:[]
             };
         },
         watch:{
@@ -89,9 +98,11 @@
         methods: {
             handleRemove(file, fileList) {
                 console.log(file, fileList);
+                this.fileList = fileList;
             },
             handleSuccess(res,file, fileList) {
-                console.log(file, fileList);
+                //console.log(res,file, fileList);
+                this.fileList.push({name:file.name,url:res.data});
             },
             
         },
@@ -127,7 +138,9 @@
         width:80%
     }
 }
-.upload-demo{
+.upload-demo2{
+    margin:8px 0 20px;
+    width:360px;
     // .el-upload-list{
     //     display: inline-block;
     //     vertical-align: middle;

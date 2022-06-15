@@ -26,6 +26,9 @@ export const navList= [
             },{
                 name: '其他产品',
                 path: '/otherApp?type=5',
+            },{
+                name: '数据库',
+                path: '/database',
             },
 
         ]
@@ -326,7 +329,24 @@ export function updateBannerItem(content) {
 export function deleteBanner(id){
     return apiService.post(apiContextPath + '/index/del',{id});
 }
-
+export function getDatabaseList(params){
+    return apiService.get(apiContextPath + '/database/introduce/query',params);
+}
+export function addDatabase(data) {
+    return apiService.post(apiContextPath + '/database/introduce/save', data);
+}
+export function updateDatabase(data) {
+    return apiService.post(apiContextPath + '/database/introduce/update', data);
+}
+export function getDatabaseDetail(id){
+    return apiService.get(apiContextPath + '/database/introduce/get',{id});
+}
+export function changeDatabaseStatus(id, isOpen) {
+    return apiService.post(apiContextPath + '/database/introduce/' + isOpen, { id });
+}
+export function deleteDatabase(id) {
+    return apiService.post(apiContextPath + '/database/introduce/del', { id });
+}
 //分页查询产品
 export function getAppList(params){
     return apiService.get(apiContextPath + '/product/query',params);

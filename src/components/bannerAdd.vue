@@ -13,7 +13,7 @@
     </div>
     <div class="line">
         <div class="word">序号</div>
-        <el-input-number v-model="sort"  :min="1" :max="6" label="轮播图序号"></el-input-number>
+        <el-input-number v-model="sort"  :min="1" :max="9" label="轮播图序号"></el-input-number>
     </div>
     <div class="line">
         <div class="word">轮播展示图片</div>
