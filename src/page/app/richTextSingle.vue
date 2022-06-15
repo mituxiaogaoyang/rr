@@ -1,5 +1,17 @@
 <template>
-    <div ref="editor" class="editor_page"></div>
+    <div class="rich_box">
+        <div ref="editor" class="editor_page"></div>
+        <el-upload
+            class="upload-demo2"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :on-remove="handleRemove"
+            :on-success="handleSuccess"
+            multiple
+            :file-list="fileList">
+            <el-button size="small" type="primary">附件上传</el-button>
+        </el-upload>
+    </div>
+    
 </template>
 
 <script>
@@ -10,7 +22,7 @@
         props:['content'],
         data () {
             return {
-               
+               fileList:[{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}]
             };
         },
         watch:{
@@ -75,7 +87,12 @@
             editor.txt.html(this.content);
         },
         methods: {
-
+            handleRemove(file, fileList) {
+                console.log(file, fileList);
+            },
+            handleSuccess(res,file, fileList) {
+                console.log(file, fileList);
+            },
             
         },
     };
@@ -111,11 +128,11 @@
     }
 }
 .upload-demo{
-    .el-upload-list{
-        display: inline-block;
-        vertical-align: middle;
-        margin-left: 20px;
-        height:36px;
-    }
+    // .el-upload-list{
+    //     display: inline-block;
+    //     vertical-align: middle;
+    //     margin-left: 20px;
+    //     height:36px;
+    // }
 }
 </style>
