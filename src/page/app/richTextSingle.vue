@@ -24,7 +24,7 @@
     import {apiContextPath} from '@/apis/home';
    const imgSite = apiContextPath + '/upload' ;
     export default {
-        props:['content','includeFile'],
+        props:['content','includeFile','files'],
         data () {
             return {
                 headers:{
@@ -38,6 +38,11 @@
             content(){
                 this.editorContent = this.content;
                 this.editor.txt.html(this.content);
+                let fileList = this.files;
+                if(fileList && fileList.length){
+                    fileList = fileList.map(item => {item.url = item.path;return item});
+                    this.fileList = fileList;
+                }
             }
         },
         mounted () {

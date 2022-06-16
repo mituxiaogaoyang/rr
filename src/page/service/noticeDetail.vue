@@ -7,7 +7,7 @@
     </div>
     <div class="line">
         内容：
-        <rich-text :content="contentText" ref="richText2" :includeFile="includeFile"></rich-text>
+        <rich-text :content="contentText" ref="richText2" :includeFile="includeFile" :files="fileList"></rich-text>
     </div>
     <div class="btn_box">
         <el-button plain @click="cancelAdd">取消</el-button>
@@ -29,7 +29,8 @@ export default {
       contentText:'',
       typeName: '新增',
       pageName: '',
-      includeFile:false
+      includeFile:false,
+      fileList:[]
     }
   },
   mounted() {
@@ -60,6 +61,7 @@ export default {
       getNoticeDetail(id,type).then(res =>{
         this.title = res.data.title;
         this.contentText = res.data.content;
+        this.fileList= res.data.attachmentList;
       })
     },
     submitNotice(){
