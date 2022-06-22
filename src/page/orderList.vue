@@ -41,9 +41,14 @@
             width="160">
         </el-table-column>
         <el-table-column
+            label="第三方订单号"
+            prop="thirdOrderCode"
+            width="160">
+        </el-table-column>
+        <el-table-column
             label="文件名"
             prop="title"
-            minWidth="120">
+            minWidth="150">
         </el-table-column>
         <el-table-column
             prop="userName"
@@ -63,7 +68,7 @@
         <el-table-column
             prop="payTime"
             :formatter="dateFormat"
-            width="160"
+            width="100"
             label="支付时间">
         </el-table-column>
         <el-table-column
@@ -81,13 +86,13 @@
             minWidth="120"
             label="邮箱">
         </el-table-column>
-        <!-- <el-table-column
-            label="问题类别"
+        <el-table-column
+            label="操作"
             width="150">
             <template slot-scope="scope">
-                <span>{{scope.row.status?'启用':'禁用'}}</span>
+                <el-button @click="viewDetail(scope.row.id)" type="text" size="small">相关文件</el-button>
             </template>
-        </el-table-column> -->
+        </el-table-column>
     </el-table>
     <el-pagination
         
@@ -97,11 +102,18 @@
         @current-change="handleCurrentChange"
         :total="page.total">
     </el-pagination>
+    <el-dialog title="相关文件" :visible.sync="dialogTableVisible">
+        <el-table :data="fileData">
+            <el-table-column type="index" width="150"></el-table-column>
+            <el-table-column property="fileResourceName" label="文件名" minWidth="200"></el-table-column>
+            <el-table-column property="amount" label="价格"></el-table-column>
+        </el-table>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import {getOrders} from '@/apis/home';
+import {getOrders, getOrderDetail} from '@/apis/home';
 import moment from 'moment';
 const states = [
     {label: '待支付',val:0},
@@ -119,7 +131,9 @@ export default {
             page:{
                 current: 1,
                 total:1
-            }
+            },
+            dialogTableVisible: false,
+            fileData:[]
         }
     },
     created(){
@@ -143,6 +157,12 @@ export default {
         handleCurrentChange(i){
             this.page.current = i;
             this.getData(i);
+        },
+        viewDetail(id){  
+            getOrderDetail(id).then(res =>{
+                this.dialogTableVisible = true;
+                this.fileData = res.data;
+            })
         },
         dateFormat(row, column) {
             var date = row[column.property];

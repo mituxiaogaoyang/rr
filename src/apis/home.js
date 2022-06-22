@@ -439,3 +439,6 @@ export function getConsultList(params) {
 export function getOrders(params) {
     return apiService.get(apiContextPath + '/order/query', {...params,pageSize});
 }
+export function getOrderDetail(orderId) {
+    return apiService.get(apiContextPath + '/order/item/query', {orderId});
+}
