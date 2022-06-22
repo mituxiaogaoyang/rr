@@ -177,6 +177,9 @@ export default {
 
 <style lang="less"> 
 #orderList{
+    .el-dialog__body{
+        padding:10px 20px 40px;
+    }
     .block{
         display: flex;
         .search_line{
@@ -184,4 +187,5 @@ export default {
         }
     }
 }
+
 </style>

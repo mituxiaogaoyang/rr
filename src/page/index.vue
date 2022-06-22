@@ -119,4 +119,7 @@
     max-height: 80px;
     overflow: hidden;
 }
+.banner_page{
+    padding-bottom: 30px;
+}
 </style>
