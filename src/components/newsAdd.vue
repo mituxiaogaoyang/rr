@@ -24,7 +24,7 @@
         </div>
         <div class="line">
             内容：
-            <div ref="editor" class="editor_news"></div>
+            <rich-text :content="editorContent" ref="richText"></rich-text>
         </div>
         <div class="btn_box">
             <el-button plain @click="cancelAdd">取消</el-button>
@@ -35,13 +35,11 @@
 </template>
 
 <script>
-    import Editor from 'wangeditor';
     import {apiContextPath, addNews, updateNews,getNewsInfo} from '@/apis/home';
     const imgSite = apiContextPath + '/upload' ;
+    import richText from '@/page/app/richTextSingle.vue';
     export default {
-        components: {
-
-        },
+        components: {richText},
         data () {
             return {
                 title: '',
@@ -51,46 +49,12 @@
                     'access-token':sessionStorage.getItem('access_token')
                 },
                 coverUrl:'',
+                editorContent:''
             };
         },
         mounted () {
             //初始化富文本编辑器
-            const editor = new Editor(this.$refs.editor);
-            editor.config.zIndex = 100;
-            editor.config.uploadImgServer = imgSite; // 上传图片到服务器
-            editor.config.uploadImgHeaders  = {
-                'access-token': sessionStorage.getItem('access_token')
-            };
-            editor.config.uploadImgParams = {
-                type: 2,
-            }
-            editor.config.uploadFileName = 'file';
-            editor.config.onchange = (html) => {
-                this.editorContent = html;
-            };
-            editor.config.customAlert =  (info) => {
-                this.$message.info(info);
-            };
-            editor.config.uploadImgHooks = {
-                before:function (xhr, editor, files) {
-   
-                },
-                success: function (xhr, editor, result) {
-                    console.log('upload image success');
-                },
-                fail: function (xhr, editor, result) {
-                    console.log(result);
-                },
-                error:function (xhr, editor) {
-                    
-                },
-                customInsert: function (insertImg, result, editor) {
-                    const url = result.data ;
-                    insertImg(url);
-                }
-            };
-            editor.create();
-            //
+
             const id = this.$route.query.id;
             if(id){//修改
                 this.idUpdate = id;
@@ -100,7 +64,6 @@
                     this.introduction = res.introduction;
                     this.editorContent =res.content;
                     this.coverUrl = res.guidePic;
-                    editor.txt.html(res.content);
                 });
             }
         },
@@ -111,7 +74,7 @@
             submitNews(){
                 const title = this.title;
                 const introduction = this.introduction;
-                const content = this.editorContent;
+                const content = this.$refs.richText.html;;;
                 const url =this.coverUrl;
                 if(title && introduction && content&& url){
                     if(this.idUpdate){ //update

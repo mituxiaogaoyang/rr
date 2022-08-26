@@ -1,6 +1,6 @@
 <template>
   <div id="noticeDetail">
-    <div class="title">{{typeName + '数据库'}}</div>
+    <div class="title2">{{typeName + '数据库'}}</div>
     <div class="line">
         标题 ：
         <el-input v-model="title" autocomplete="off"></el-input>
@@ -81,7 +81,7 @@ export default {
 <style lang="less" >
 #noticeDetail{
   padding:20px;
-  .title{
+  .title2{
     color:#000;
     margin:15px 0 30px;
     font-size: 16px;

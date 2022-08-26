@@ -115,10 +115,10 @@ export default {
         },
         submitObj(){
             const productName = this.productName;
-            const introduction = this.$refs.richText1.editorContent;
-            const coreFunction = this.$refs.richText2.editorContent;
-            const advantage = this.$refs.richText3.editorContent;
-            const purchase = this.$refs.richText4.editorContent;
+            const introduction = this.$refs.richText1.html;
+            const coreFunction = this.$refs.richText2.html;
+            const advantage = this.$refs.richText3.html;
+            const purchase = this.$refs.richText4.html;
             const type = Number(this.$route.query.type);
             const sort = this.sort;
             if(productName && introduction && coreFunction && advantage && purchase && sort){

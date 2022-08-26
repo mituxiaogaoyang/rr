@@ -1,6 +1,6 @@
 <template>
   <div id="noticeDetail">
-    <div class="title">{{typeName + pageName}}</div>
+    <div class="title_word">{{typeName + pageName}}</div>
     <div class="line">
         标题 ：
         <el-input v-model="title" autocomplete="off"></el-input>
@@ -66,7 +66,7 @@ export default {
     },
     submitNotice(){
       const title = this.title;
-      const content = this.$refs.richText2.editorContent;
+      const content = this.$refs.richText2.html;
       const fileList = this.$refs.richText2.fileList;
       const params = {content,title};
       if(fileList && fileList.length){
@@ -101,7 +101,7 @@ export default {
 <style lang="less" >
 #noticeDetail{
   padding:20px;
-  .title{
+  .title_word{
     color:#000;
     margin:15px 0 30px;
     font-size: 16px;

@@ -8,22 +8,7 @@
         
         <div class="line">
             内容：
-            <div style="border: 1px solid #ccc; margin-top: 10px;">
-                <!-- 工具栏 -->
-                <Toolbar
-                    style="border-bottom: 1px solid #ccc"
-                    :editor="editor"
-                    :defaultConfig="toolbarConfig"
-                />
-                <!-- 编辑器 -->
-                <Editor
-                    style="height: 360px; overflow-y: hidden;"
-                    :defaultConfig="editorConfig"
-                    v-model="html"
-                    @onChange="onChange"
-                    @onCreated="onCreated"
-                />
-            </div>
+            <div ref="editor" class="editor_page"></div>
         </div>
         <div class="btn_box">
             <el-button plain @click="cancelAdd">取消</el-button>
@@ -34,7 +19,7 @@
 </template>
 
 <script>
-    import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+    import Editor from 'wangeditor';
     import {apiContextPath, getEvents, getCulture, getSituation, getIp,setEvents, setCulture, setSituation, setIp,
             getAdv, getCore, getBuy, getSoft, setAdv, setCore, setBuy, setSoft,
             getMeetingAdv, getMeetingContact, getMeetingSponsor, getMeetingNotice, getMeetingUndertake,
@@ -64,85 +49,71 @@
         {page: 'train5', word: '接洽方式', fun: getTrainContact,func2:setTrainContact,backRoute: '/train'},
    ]
     export default {
-        components: { Editor, Toolbar },
+        components: {
+
+        },
         data () {
             return {
-                pageTitle: '',
-                editor: null,
-                html: '',
-                toolbarConfig: {
-                    // toolbarKeys: [ /* 显示哪些菜单，如何排序、分组 */ ],
-                    // excludeKeys: [ /* 隐藏哪些菜单 */ ],
-                },
-                editorConfig: {
-                    placeholder: '请输入内容...',
-                    // autoFocus: false,
-                    customAlert: (info) =>{
-                        this.$message.info(info);
-                    },
-                    // 所有的菜单配置，都要在 MENU_CONF 属性下
-                    MENU_CONF: {
-                        uploadImage:{
-                            server: imgSite,
-                            fieldName: 'file',
-                            meta: {
-                                type: 1,
-                            },
-                            headers: {
-                                'access-token': sessionStorage.getItem('access_token')
-                            },
-                            customInsert(res, insertFn){
-                                const url = res.data;
-                                insertFn(url, '', '')
-                            }
-                        },
-                        uploadVideo:{
-                             server: imgSite,
-                            fieldName: 'file',
-                            meta: {
-                                type: 1,
-                            },
-                            headers: {
-                                'access-token': sessionStorage.getItem('access_token')
-                            },
-                            customInsert(res, insertFn){
-                                const url = res.data;
-                                insertFn(url, '')
-                            }
-                        }
-                    }
-                }
+                pageTitle: ''
             };
         },
         mounted () {
             //初始化富文本编辑器
-           
+            const editor = new Editor(this.$refs.editor);
+            editor.config.zIndex = 100;
+            editor.config.uploadImgServer = imgSite; // 上传图片到服务器
+            editor.config.uploadImgHeaders  = {
+                'access-token': sessionStorage.getItem('access_token')
+            };
+            editor.config.uploadImgParams = {
+                type: 1,
+            }
+            editor.config.uploadFileName = 'file';
+            editor.config.onchange = (html) => {
+                this.editorContent = html;
+            };
+            editor.config.customAlert =  (info) => {
+                this.$message.info(info);
+            };
+            editor.config.uploadImgHooks = {
+                before:function (xhr, editor, files) {
+   
+                },
+                success: function (xhr, editor, result) {
+                    console.log('upload image success');
+                },
+                fail: function (xhr, editor, result) {
+                    console.log(result);
+                },
+                error:function (xhr, editor) {
+                    
+                },
+                customInsert: function (insertImg, result, editor) {
+                    const url = result.data ;
+                    insertImg(url);
+                }
+            };
+            editor.create();
+            //
+            const page = this.$route.params.page;
+            mapPage.forEach(item =>{
+                if(page === item.page){
+                    this.pageTitle = item.word;
+                    this.item = item;
+                    item.fun().then(res =>{
+                        this.editorContent =res.data.content;
+                        editor.txt.html(res.data.content);
+                    })
+                    
+                }
+            })
         },
         methods: {
-            onCreated(editor) {
-                this.editor = Object.seal(editor) // 【注意】一定要用 Object.seal() 否则会报错
-                const page = this.$route.params.page;
-                mapPage.forEach(item =>{
-                    if(page === item.page){
-                        this.pageTitle = item.word;
-                        this.item = item;
-                        item.fun().then(res =>{
-                            //this.editorContent =res.data.content;
-                            //editor.txt.html(res.data.content);
-                            this.html = res.data.content;
-                        })
-                        
-                    }
-                })
-            },
-            onChange(editor) {
-                //console.log('onChange', editor.getHtml()) // onChange 时获取编辑器最新内容
-            },
             cancelAdd(){
                 this.$router.push(this.item.backRoute);
             },
             submitNews(){
-                const content = this.html;
+                const content = this.editorContent;
                 
                 if(content){
                     
@@ -159,7 +130,7 @@
         },
     };
 </script>
-<style src="@wangeditor/editor/dist/css/style.css"></style>
+
 <style lang='less' scoped>
 .newsAdd{
     .title{

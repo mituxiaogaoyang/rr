@@ -14,11 +14,13 @@
         </div>
         <div class="line">
             职位简介：
-            <div ref="editor1" class="editor_job"></div>
+            <!-- <div ref="editor1" class="editor_job"></div> -->
+            <rich-text :content="jobDuty" ref="richText1"></rich-text>
         </div>
         <div class="line">
             任职要求：
-            <div ref="editor2" class="editor_job"></div>
+            <!-- <div ref="editor2" class="editor_job"></div> -->
+            <rich-text :content="jobRequire" ref="richText2"></rich-text>
         </div>
         <div class="btn_box">
             <el-button plain @click="cancelAdd">取消</el-button>
@@ -28,65 +30,23 @@
 </template>
 
 <script>
-    import Editor from 'wangeditor';
     import {apiContextPath, addJob, updateJob,getJobInfo} from '@/apis/home';
     const imgSite = apiContextPath + '/upload' ;
+    import richText from '@/page/app/richTextSingle.vue';
     export default {
+        components: {richText},
         data () {
             return {
                 position: '',
                 salary: '',
-                num: ''
+                num: '',
+                jobDuty:'',
+                jobRequire:''
             };
         },
         mounted () {
             //初始化富文本编辑器
-            const editor1 = new Editor(this.$refs.editor1);
-            const editor2 = new Editor(this.$refs.editor2); 
-            const editors = [editor1, editor2];
-            editors.forEach((editor, i) =>{
-                editors[i].config.zIndex = 100;
-                editors[i].config.uploadImgServer = imgSite; // 上传图片到服务器
-                editors[i].config.uploadImgHeaders  = {
-                    'access-token': sessionStorage.getItem('access_token')
-                };
-                editors[i].config.uploadImgParams = {
-                    type: 1,
-                }
-                editors[i].config.uploadFileName = 'file';
-                editors[i].config.onchange = (html) => {
-                    if(i ===0 ){
-                        this.jobDuty = html;
-                    }else{
-                        this.jobRequire = html;
-                    }
 
-                };
-                editors[i].config.customAlert =  (info) => {
-                    this.$message.info(info);
-                };
-                editors[i].config.uploadImgHooks = {
-                    before:function (xhr, editor, files) {
-    
-                    },
-                    success: function (xhr, editor, result) {
-                        console.log('upload image success');
-                    },
-                    fail: function (xhr, editor, result) {
-                        console.log(result);
-                    },
-                    error:function (xhr, editor) {
-
-                    },
-                    customInsert: function (insertImg, result, editor) {
-                        const url = result.data ;
-                        insertImg(url);
-                    }
-                };
-                editors[i].create();
-            })
-            
-            //
             const id = this.$route.query.id;
             if(id){//修改
                 this.idUpdate = id;
@@ -97,8 +57,6 @@
                     this.jobRequire =res.jobRequire;
                     this.jobDuty = res.jobDuty;
                     this.num = res.num;
-                    editor1.txt.html(res.jobDuty);
-                    editor2.txt.html(res.jobRequire);
                 });
             }
         },
@@ -108,8 +66,8 @@
             },
             submitJob(){
                 const position = this.position;
-                const jobRequire = this.jobRequire;
-                const jobDuty = this.jobDuty;
+                const jobRequire = this.$refs.richText2.html;;
+                const jobDuty = this.$refs.richText1.html;;
                 const salary = this.salary;
                 const num = this.num;
                 if( position && salary){

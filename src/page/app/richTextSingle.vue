@@ -1,6 +1,21 @@
 <template>
     <div class="rich_box">
-        <div ref="editor" class="editor_page"></div>
+        <div style="border: 1px solid #ccc; margin-top: 10px;">
+            <!-- 工具栏 -->
+            <Toolbar
+                style="border-bottom: 1px solid #ccc"
+                :editor="editor"
+                :defaultConfig="toolbarConfig"
+            />
+            <!-- 编辑器 -->
+            <Editor
+                style="height: 360px; overflow-y: hidden;"
+                :defaultConfig="editorConfig"
+                v-model="html"
+                
+                @onCreated="onCreated"
+            />
+        </div>
         <el-upload
             v-if = "includeFile"
             class="upload-demo2"
@@ -20,10 +35,11 @@
 
 <script>
 // 
-    import Editor from 'wangeditor';
+    import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
     import {apiContextPath} from '@/apis/home';
    const imgSite = apiContextPath + '/upload' ;
     export default {
+        components: { Editor, Toolbar },
         props:['content','includeFile','files'],
         data () {
             return {
@@ -31,13 +47,56 @@
                     'access-token':sessionStorage.getItem('access_token')
                 },
                 uploadSite: imgSite,
-               fileList:[]
+                fileList:[],
+                editor: null,
+                html: '',
+                toolbarConfig: {
+                    // toolbarKeys: [ /* 显示哪些菜单，如何排序、分组 */ ],
+                    // excludeKeys: [ /* 隐藏哪些菜单 */ ],
+                },
+                editorConfig: {
+                    placeholder: '请输入内容...',
+                    // autoFocus: false,
+                    customAlert: (info) =>{
+                        this.$message.info(info);
+                    },
+                    // 所有的菜单配置，都要在 MENU_CONF 属性下
+                    MENU_CONF: {
+                        uploadImage:{
+                            server: imgSite,
+                            fieldName: 'file',
+                            meta: {
+                                type: 1,
+                            },
+                            headers: {
+                                'access-token': sessionStorage.getItem('access_token')
+                            },
+                            customInsert(res, insertFn){
+                                const url = res.data;
+                                insertFn(url, '', '')
+                            }
+                        },
+                        uploadVideo:{
+                            server: imgSite,
+                            fieldName: 'file',
+                            meta: {
+                                type: 1,
+                            },
+                            headers: {
+                                'access-token': sessionStorage.getItem('access_token')
+                            },
+                            customInsert(res, insertFn){
+                                const url = res.data;
+                                insertFn(url, '')
+                            }
+                        }
+                    }
+                }
             };
         },
         watch:{
             content(){
-                this.editorContent = this.content;
-                this.editor.txt.html(this.content);
+                this.html = this.content;
                 let fileList = this.files;
                 if(fileList && fileList.length){
                     fileList = fileList.map(item => {item.url = item.path;return item});
@@ -46,9 +105,6 @@
             }
         },
         mounted () {
-            //初始化富文本编辑器
-            const editor = new Editor(this.$refs.editor);
-            editor.config.zIndex = 100;
             //判断页面 上传文件type
             let type ;
             const route = this.$route
@@ -62,45 +118,19 @@
                 }else{
                     type = 6;
                 }
+            }else if(route.path.indexOf('addNews')>-1){
+                type = 2;
+            }else{
+                type = 1;
             }
-            editor.config.uploadImgServer = imgSite; // 上传图片到服务器
-            editor.config.uploadImgHeaders  = {
-                'access-token': sessionStorage.getItem('access_token')
-            };
-            editor.config.uploadImgParams = {
-                type: type,
-            }
-            editor.config.uploadFileName = 'file';
-            editor.config.onchange = (html) => {
-                this.editorContent = html;
-            };
-            editor.config.customAlert =  (info) => {
-                this.$message.info(info);
-            };
-            editor.config.uploadImgHooks = {
-                before:function (xhr, editor, files) {
-   
-                },
-                success: function (xhr, editor, result) {
-                    console.log('upload image success');
-                },
-                fail: function (xhr, editor, result) {
-                    console.log(result);
-                },
-                error:function (xhr, editor) {
-                    
-                },
-                customInsert: function (insertImg, result, editor) {
-                    const url = result.data ;
-                    insertImg(url);
-                }
-            };
-            editor.create();
-            this.editor = editor;
-            this.editorContent = this.content;
-            editor.txt.html(this.content);
+            this.editorConfig.MENU_CONF.uploadImage.meta.type =type;
+            this.editorConfig.MENU_CONF.uploadVideo.meta.type =type;
+
         },
         methods: {
+            onCreated(editor) {
+                this.editor = Object.seal(editor) 
+            },
             handleRemove(file, fileList) {
                 console.log(file, fileList);
                 this.fileList = fileList;
