@@ -55,7 +55,7 @@ export default {
     submitNotice(){
       const name = this.title;
       const sort = this.sort;
-      const content = this.$refs.richText2.editorContent;
+      const content = this.$refs.richText2.html;
       const id = this.$route.query.id;
       if(name &&  content){
         if(id){ //update
